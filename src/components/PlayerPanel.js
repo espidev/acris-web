@@ -1,8 +1,8 @@
 import React from "react";
 
-class PlayerPanel extends React.Component {
-    constructor() {
-        super();
+export default class PlayerPanel extends React.Component {
+    constructor(props) {
+        super(props);
         this.state = {
             playing: false
         }

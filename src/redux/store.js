@@ -1,7 +1,10 @@
-let production = false;
+import AuthReducer from "./slices/authSlice";
+import PlayerReducer from "./slices/playerSlice";
+import { createStore, combineReducers } from 'redux';
 
-if (production) {
-  module.exports = require('./configureStore.prod')
-} else {
-  module.exports = require('./configureStore.dev')
-}
+const reducer = combineReducers({
+    auth: AuthReducer,
+    player: PlayerReducer,
+});
+
+export const store = createStore(reducer);
