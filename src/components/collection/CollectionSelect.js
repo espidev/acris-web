@@ -3,9 +3,8 @@ import {connect} from "react-redux";
 import {store} from "../../redux/store";
 import {switchCollection} from "../../redux/slices/playerSlice";
 import {getCollectionsList} from "../../redux/actions/collection";
-import {push} from "connected-react-router";
 
-import './CollectionSwitch.css';
+import './CollectionSelect.css';
 
 import {
     TextContent,
@@ -23,7 +22,8 @@ import {
     Button
 } from '@patternfly/react-core';
 import {Icon} from '@fluentui/react/lib/Icon';
-import LoadingComponent from "../LoadingComponent";
+import LoadingComponent from "../util/LoadingComponent";
+import {withRouter} from "react-router-dom";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -61,7 +61,7 @@ class CollectionSelect extends React.Component {
                     <EmptyStateBody>
                         Create a new music collection, or ask another user to be invited to view their music collections.
                     </EmptyStateBody>
-                    <Button variant="primary" onClick={() => store.dispatch(push('/new-collection'))}>Create Collection</Button>
+                    <Button variant="primary" onClick={() => this.props.history.push('/new-collection')}>Create Collection</Button>
                 </EmptyState>
             );
         } else {
@@ -88,7 +88,7 @@ class CollectionSelect extends React.Component {
                                 </Card>
                             ))}
 
-                            <Card isHoverable key="Card-New" className="collection-card" onClick={() => store.dispatch(push('/new-collection'))}>
+                            <Card isHoverable key="Card-New" className="collection-card" onClick={() => this.props.history.push('/new-collection')}>
                                 <CardTitle>New Collection</CardTitle>
                                 <CardBody>
                                     <Icon iconName="Add"/>
@@ -103,4 +103,4 @@ class CollectionSelect extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(CollectionSelect);
+export default withRouter(connect(mapStateToProps)(CollectionSelect));

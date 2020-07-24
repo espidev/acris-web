@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    ActionGroup,
+    ActionGroup, Breadcrumb, BreadcrumbItem,
     Button,
     Form,
     FormGroup,
@@ -11,8 +11,10 @@ import {
     TextInput,
     TextVariants
 } from "@patternfly/react-core";
+import {withRouter} from "react-router-dom";
+import BreadcrumbComponent from "../util/BreadcrumbComponent";
 
-export default class NewCollectionForm extends React.Component {
+class NewCollectionForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,7 +22,7 @@ export default class NewCollectionForm extends React.Component {
             isPublic: false,
         }
 
-        this.handleNameChange = event => this.setState({name: event.target.value});
+        this.handleNameChange = name => this.setState({name: name});
         this.handleIsPublicChange = isChecked => this.setState({isPublic: isChecked});
         this.handleFormSubmit = () => {
 
@@ -28,15 +30,33 @@ export default class NewCollectionForm extends React.Component {
     }
 
     render() {
+
+        const breadcrumbElements = [
+            {
+                link: '/',
+                display: 'Collections',
+                isActive: false,
+            },
+            {
+                link: '',
+                display: 'New Collection',
+                isActive: true,
+            }
+        ];
+
         return (
             <React.Fragment>
+                <PageSection>
+                    <BreadcrumbComponent elements={breadcrumbElements}/>
+                </PageSection>
+
                 <PageSection>
                     <TextContent>
                         <Text component={TextVariants.h1}>New Collection</Text>
                         <Text component={TextVariants.p}>Creating a new collection of music.</Text>
                     </TextContent>
                 </PageSection>
-                <PageSection style={{"max-width": "50rem"}}>
+                <PageSection style={{"maxWidth": "50rem"}}>
                     <Form onSubmit={this.handleFormSubmit}>
                         <FormGroup label="Name" fieldId="name" isRequired>
                             <TextInput isRequired type="text" id="name" name="name" onChange={this.handleNameChange}/>
@@ -59,3 +79,5 @@ export default class NewCollectionForm extends React.Component {
         );
     }
 }
+
+export default withRouter(NewCollectionForm);

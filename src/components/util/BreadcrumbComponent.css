@@ -1,0 +1,33 @@
+.breadcrumbItem {
+    color: rgb(0, 102, 204);
+}
+
+.breadcrumbItem {
+    color: #0277bd;
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    transition: text-decoration 0.3s;
+    position: relative;
+}
+
+.breadcrumbItem:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #009688;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out;
+}
+
+.breadcrumbItem:hover:before {
+    visibility: visible;
+    transform: scaleX(1);
+}
+
+.breadcrumbItem:hover {
+    cursor: pointer
+}

@@ -2,9 +2,8 @@ import React from 'react';
 import "@patternfly/react-core/dist/styles/base.css";
 
 import {Provider} from "react-redux";
-import {history, persistor, store} from "../redux/store";
+import {persistor, store} from "../redux/store";
 import {PersistGate} from 'redux-persist/integration/react'
-import { ConnectedRouter } from 'connected-react-router'
 import {BrowserRouter as Router} from "react-router-dom";
 
 import {initializeIcons} from "@uifabric/icons";
@@ -15,13 +14,11 @@ export default class Acris extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <ConnectedRouter history={history}>
-                    <PersistGate loading={null} persistor={persistor}>
-                        <Router>
-                            <AcrisContainer/>
-                        </Router>
-                    </PersistGate>
-                </ConnectedRouter>
+                <PersistGate loading={null} persistor={persistor}>
+                    <Router>
+                        <AcrisContainer/>
+                    </Router>
+                </PersistGate>
             </Provider>
         )
     }
