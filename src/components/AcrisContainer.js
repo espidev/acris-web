@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {Route, Switch, withRouter, useParams} from "react-router-dom";
+import {Route, Switch, withRouter, useParams, Redirect} from "react-router-dom";
 
 import {Page} from "@patternfly/react-core";
 
@@ -21,12 +21,33 @@ class AcrisContainer extends React.Component {
     }
 
     render() {
+
+        const PrivateRoute = ({ children, ...rest }) => {
+            return (
+                <Route
+                    {...rest}
+                    render={({ location }) =>
+                        this.props.user !== null ? (
+                            children
+                        ) : (
+                            <Redirect
+                                to={{
+                                    pathname: "/login",
+                                    state: { from: location }
+                                }}
+                            />
+                        )
+                    }
+                />
+            );
+        }
+
         return (
             <div style={{"height": "100%"}}>
                 <Page isManagedSidebar header={<Header/>} sidebar={(this.props.user === null) ? <React.Fragment/> : <Sidebar/>}>
                     <Switch>
-                        <Route exact path="/"><LandingPage/></Route>
-                        <Route path="/collection/:collectionId"><CollectionContainer/></Route>
+                        <PrivateRoute exact path="/"><LandingPage/></PrivateRoute>
+                        <PrivateRoute path="/collection/:collectionId"><CollectionContainer/></PrivateRoute>
                         <Route exact path="/login"><Login/></Route>
                     </Switch>
                 </Page>

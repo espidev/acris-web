@@ -11,6 +11,7 @@ import {
 
 import { CogIcon, HelpIcon } from "@patternfly/react-icons";
 import HeaderProfileDropdown from "./HeaderProfileDropdown";
+import {Link} from "react-router-dom";
 
 export default class Header extends React.Component {
 
@@ -36,6 +37,6 @@ export default class Header extends React.Component {
             </PageHeaderTools>
         );
 
-        return <PageHeader logo="Acris" headerTools={headerTools}/>;
+        return <PageHeader logo={<Link to={"/"}><h1>Acris</h1></Link>} headerTools={headerTools}/>;
     }
 }
