@@ -15,6 +15,8 @@ const mapStateToProps = state => (
     }
 );
 
+// unused
+
 class CollectionSelector extends React.Component {
     constructor(props) {
         super(props);

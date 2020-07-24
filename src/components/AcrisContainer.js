@@ -8,8 +8,8 @@ import Header from "./panels/Header";
 import Sidebar from "./panels/Sidebar";
 import LandingPage from "./Landing";
 import Login from "./Login";
-import PlayerPanel from "./PlayerPanel";
-import CollectionContainer from "./CollectionContainer";
+import PlayerPanel from "./panels/PlayerPanel";
+import CollectionContainer from "./CollectionRouteContainer";
 
 const mapStateToProps = state => ({
     user: state.auth.user,

@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
     collection: state.player.collection,
 });
 
-class CollectionContainer extends React.Component {
+class CollectionRouteContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,11 +24,12 @@ class CollectionContainer extends React.Component {
 
     componentWillMount() {
         // update collection if the url collectionId has changed
+        let {collectionId} = useParams();
         this.unlisten = this.props.history.listen((location, action) => {
-            let {collectionId} = useParams();
             console.log("History url change trigger");
 
             if (typeof collectionId === 'undefined') {
+                
                 store.dispatch(switchCollection(null));
             } else if (this.props.collection.id !== collectionId) {
                 getCollection(collectionId).then(col => {
@@ -36,7 +37,7 @@ class CollectionContainer extends React.Component {
                         // TODO 404
                         console.log('404, collection not found');
                     } else {
-                        this.state.loading = false;
+                        this.setState({loading: false});
                         store.dispatch(switchCollection(col));
                     }
                 });
@@ -68,4 +69,4 @@ class CollectionContainer extends React.Component {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(CollectionContainer));
+export default withRouter(connect(mapStateToProps)(CollectionRouteContainer));

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+    Divider,
     Nav,
     NavItem,
     NavList, PageSidebar,
@@ -8,6 +9,8 @@ import {
 
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
+
+import './Sidebar.css';
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -32,12 +35,13 @@ class Sidebar extends React.Component {
                     <NavItem preventDefault onClick={this.navClick('artists')}>Artists</NavItem>
                     <NavItem preventDefault onClick={this.navClick('genres')}>Genres</NavItem>
                     <NavItem preventDefault onClick={this.navClick('playlists')}>Playlists</NavItem>
+                    <Divider/>
                     <NavItem preventDefault onClick={this.navClick('upload')}>Upload</NavItem>
                 </NavList>
             </Nav>
         );
 
-        return <PageSidebar nav={PageNav} theme="light"/>
+        return <PageSidebar className="sidebar" nav={PageNav} theme="light"/>
     }
 }
 

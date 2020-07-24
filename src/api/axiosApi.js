@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {store} from "../redux/store";
+import {logoutUser} from"../redux/slices/authSlice";
 
 // TODO
 const baseURL = 'http://localhost:8000/api/';
@@ -29,7 +31,7 @@ axiosAPI.interceptors.response.use(
 
         // prevent infinite loops
         if (error.response.status === 401 && originalRequest.url === baseURL + 'token/refresh/') {
-            // todo go to login page
+            store.dispatch(logoutUser());
             return Promise.reject(error);
         }
 
@@ -51,16 +53,15 @@ axiosAPI.interceptors.response.use(
                         }
                     } else {
                         console.log('Refresh token has expired', tokenParts.exp, now);
-                        // todo go to login page
+                        store.dispatch(logoutUser());
                     }
                 } else { // no refresh token -> go to login page
                     console.log('Refresh token not available.');
-                    // todo go to login page
+                    store.dispatch(logoutUser());
                 }
             } catch (e) {
                 console.log(e);
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('refresh_token');
+                store.dispatch(logoutUser());
             }
         }
         return Promise.reject(error);

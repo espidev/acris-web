@@ -7,7 +7,7 @@ import {PersistGate} from 'redux-persist/integration/react'
 
 import {BrowserRouter as Router} from "react-router-dom";
 
-import PlayerPanel from "./PlayerPanel";
+import PlayerPanel from "./panels/PlayerPanel";
 
 import {initializeIcons} from "@uifabric/icons";
 import AcrisContainer from "./AcrisContainer";
