@@ -18,6 +18,7 @@ class Sidebar extends React.Component {
                     <NavItem>Artists</NavItem>
                     <NavItem>Genres</NavItem>
                     <NavItem preventDefault onClick={() => this.props.history.push('/playlists')}>Playlists</NavItem>
+                    <NavItem preventDefault onClick={() => this.props.history.push('/upload')}>Upload</NavItem>
                 </NavList>
             </Nav>
         );

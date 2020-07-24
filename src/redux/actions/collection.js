@@ -9,3 +9,13 @@ export async function getCollectionsList() {
     }
     return [];
 }
+
+export async function getCollection(id) {
+    try {
+        let response = await getCollection(id);
+        return response.data;
+    } catch (e) {
+        console.log('Error fetching collections list: ' + e);
+    }
+    return null;
+}

@@ -1,15 +1,17 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {Route, Switch, withRouter} from "react-router-dom";
+import {Route, Switch, withRouter, useParams} from "react-router-dom";
+
+import {Page} from "@patternfly/react-core";
+
 import Header from "./panels/Header";
 import Sidebar from "./panels/Sidebar";
 import LandingPage from "./Landing";
 import Login from "./Login";
-import {Page} from "@patternfly/react-core";
 import PlayerPanel from "./PlayerPanel";
+import CollectionContainer from "./CollectionContainer";
 
 const mapStateToProps = state => ({
-    selectedCollection: state.player.collection,
     user: state.auth.user,
 });
 
@@ -24,16 +26,12 @@ class AcrisContainer extends React.Component {
                 <Page isManagedSidebar header={<Header/>} sidebar={(this.props.user === null) ? <React.Fragment/> : <Sidebar/>}>
                     <Switch>
                         <Route exact path="/"><LandingPage/></Route>
-                        <Route exact path="/collection/:collection_id/tracks"/>
-                        <Route exact path="/collection/:collection_id/albums"/>
-                        <Route exact path="/collection/:collection_id/artists"/>
-                        <Route exact path="/collection/:collection_id/genres"/>
-                        <Route exact path="/collection/:collection_id/playlists"/>
+                        <Route path="/collection/:collectionId"><CollectionContainer/></Route>
                         <Route exact path="/login"><Login/></Route>
                     </Switch>
                 </Page>
 
-                {(this.props.user === null || this.props.selectedCollection === null) ? <React.Fragment/> : <PlayerPanel/>}
+                {(this.props.user === null) ? <React.Fragment/> : <PlayerPanel/>}
             </div>
         );
     }

@@ -8,8 +8,8 @@ const mapStateToProps = state => (
     }
 );
 
-class TrackList extends React.Component {
+class GenreList extends React.Component {
 
 }
 
-export default withRouter(connect(mapStateToProps)(TrackList))
+export default withRouter(connect(mapStateToProps)(GenreList))

@@ -4,7 +4,6 @@ import {
     Text,
     TextVariants, PageSection, PageSectionVariants
 } from '@patternfly/react-core';
-import CollectionSelector from "./CollectionSelector";
 
 export default class LandingPage extends React.Component {
 
@@ -14,7 +13,6 @@ export default class LandingPage extends React.Component {
                 <TextContent>
                     <Text component={TextVariants.h1}>Acris</Text>
                 </TextContent>
-                <CollectionSelector/>
             </PageSection>
         )
     }
