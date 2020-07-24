@@ -26,35 +26,41 @@ axiosAPI.interceptors.response.use(
     response => response,
     async error => {
         const originalRequest = error.config;
+
         // prevent infinite loops
         if (error.response.status === 401 && originalRequest.url === baseURL + 'token/refresh/') {
-            window.location.href = '/login/';
+            // todo go to login page
             return Promise.reject(error);
         }
 
         if (error.response.status === 401 && error.response.statusText === 'Unauthorized') {
-            const refresh = localStorage.getItem('refresh_token');
+            try {
+                const refresh = localStorage.getItem('refresh_token');
+                if (refresh) { // if there is a refresh token, try to login
+                    const tokenParts = JSON.parse(atob(refresh.split('.')[1]));
+                    const now = Math.ceil(Date.now() / 1000);
 
-            if (refresh) { // if there is a refresh token, try to login
-                const tokenParts = JSON.parse(atob(refresh.split('.')[1]));
-                const now = Math.ceil(Date.now() / 1000);
-
-                if (tokenParts.exp > now) {
-                    try {
-                        const response = await axiosAPI.post('/token/refresh/', {refresh});
-                        setNewHeaders(response);
-                        originalRequest.headers['Authorization'] = 'Bearer ' + response.data.access;
-                        return axiosAPI(originalRequest);
-                    } catch (e) {
-                        console.log(e);
+                    if (tokenParts.exp > now) {
+                        try {
+                            const response = await axiosAPI.post('token/refresh/', {refresh});
+                            setNewHeaders(response);
+                            originalRequest.headers['Authorization'] = 'Bearer ' + response.data.access;
+                            return axiosAPI(originalRequest);
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    } else {
+                        console.log('Refresh token has expired', tokenParts.exp, now);
+                        // todo go to login page
                     }
-                } else {
-                    console.log('Refresh token has expired', tokenParts.exp, now);
-                    window.location.href = '/login/';
+                } else { // no refresh token -> go to login page
+                    console.log('Refresh token not available.');
+                    // todo go to login page
                 }
-            } else { // no refresh token -> go to login page
-                console.log('Refresh token not available.');
-                window.location.href = '/login/';
+            } catch (e) {
+                console.log(e);
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
             }
         }
         return Promise.reject(error);

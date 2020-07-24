@@ -2,6 +2,7 @@ import {obtainToken, logout} from "../../api/auth";
 import {authSlice} from "../slices/authSlice";
 import {store} from "../store";
 import axiosAPI from "../../api/axiosApi";
+import {playerSlice} from "../slices/playerSlice";
 
 export async function loginUser(username, password) {
     try {
@@ -19,4 +20,5 @@ export async function loginUser(username, password) {
 export async function logoutUser() {
     await logout();
     store.dispatch(authSlice.actions.logoutUser());
+    store.dispatch(playerSlice.actions.switchCollection(null));
 }

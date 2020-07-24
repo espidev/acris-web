@@ -57,8 +57,10 @@
     transition: background-color 0.5s;
     text-align: center;
     font-size: 18px;
+    color: #06c
 }
 
 .media-clickable:hover {
     background-color: #bee1f4;
+    cursor: pointer;
 }

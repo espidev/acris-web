@@ -28,12 +28,12 @@ class PlayerPanel extends React.Component {
 
                 <input type="range" min="0" max="100" value="50" className="duration-slider" onChange={this.handleSliderChange}/>
                 <ul className="right-component">
-                    <li className="media-clickable"><a><Icon iconName="Previous"/></a></li>
-                    <li className="media-clickable"><a>{this.props.playing ? <Icon iconName="Pause"/> : <Icon iconName="Play"/>}</a></li>
-                    <li className="media-clickable"><a><Icon iconName="Next"/></a></li>
-                    <li className="media-clickable"><a><Icon iconName="Volume2"/></a></li>
-                    <li className="media-clickable"><a><Icon iconName="RepeatAll"/></a></li>
-                    <li className="media-clickable"><a><Icon iconName="Switch"/></a></li>
+                    <li className="media-clickable"><Icon iconName="Previous"/></li>
+                    <li className="media-clickable">{this.props.playing ? <Icon iconName="Pause"/> : <Icon iconName="Play"/>}</li>
+                    <li className="media-clickable"><Icon iconName="Next"/></li>
+                    <li className="media-clickable"><Icon iconName="Volume2"/></li>
+                    <li className="media-clickable"><Icon iconName="RepeatAll"/></li>
+                    <li className="media-clickable"><Icon iconName="Switch"/></li>
                 </ul>
             </nav>
         );

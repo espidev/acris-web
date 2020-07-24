@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {playerSlice} from "./playerSlice";
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -8,19 +7,20 @@ export const authSlice = createSlice({
         user: null,
     },
     reducers: {
+        // successful user login
+        // tokens - object returned by api (access, refresh token)
+        // user - user object
         loginUserSuccess: (state , action) => {
-            state.token = action.payload.tokens.access;
+            state.accessToken = action.payload.tokens.access;
             state.user = action.payload.user;
-            return state;
         },
         logoutUser: (state, action) => {
-            state.token = "";
+            state.accessToken = "";
             state.user = null;
-            return state;
         },
     },
 });
 
-export const { loginUserSuccess, logoutUser } = playerSlice.actions;
+export const { loginUserSuccess, logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;
