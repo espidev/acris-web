@@ -11,7 +11,7 @@ class Sidebar extends React.Component {
 
     render() {
         const PageNav = (
-            <Nav>
+            <Nav theme="light">
                 <NavList>
                     <NavItem>Tracks</NavItem>
                     <NavItem>Albums</NavItem>
@@ -22,7 +22,7 @@ class Sidebar extends React.Component {
             </Nav>
         );
 
-        return <PageSidebar nav={PageNav}/>
+        return <PageSidebar nav={PageNav} theme="light"/>
     }
 }
 

@@ -6,6 +6,10 @@ import {logoutUser} from "../../redux/actions/auth";
 import {withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
 
+const mapStateToProps = state => ({
+        user: state.auth.user
+    });
+
 class HeaderProfileDropdown extends React.Component {
     constructor(props) {
         super(props);
@@ -55,7 +59,5 @@ class HeaderProfileDropdown extends React.Component {
         }
     }
 }
-
-const mapStateToProps = state => ({user: state.auth.user});
 
 export default withRouter(connect(mapStateToProps)(HeaderProfileDropdown));

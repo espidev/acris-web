@@ -21,6 +21,10 @@ import {
     PageSection,
     PageSectionVariants
 } from "@patternfly/react-core";
+import PlayerPanel from "./PlayerPanel";
+
+import {initializeIcons} from "@uifabric/icons";
+initializeIcons();
 
 export default class Acris extends React.Component {
 
@@ -42,6 +46,7 @@ export default class Acris extends React.Component {
                                 </Switch>
                             </PageSection>
                         </Page>
+                        <PlayerPanel/>
                     </Router>
                 </PersistGate>
             </Provider>
