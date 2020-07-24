@@ -1,20 +1,22 @@
-import {obtainToken, logout} from "../../components/api/auth";
+import {obtainToken, logout} from "../../api/auth";
 import {authSlice} from "../slices/authSlice";
+import {store} from "../store";
+import axiosAPI from "../../api/axiosApi";
 
-export function loginUser(username, password) {
-    return async function (dispatch) {
-        try {
-            const response = await obtainToken(username, password);
-            dispatch(authSlice.actions.loginUserSuccess(response.data.access));
-        } catch (error) {
-            console.log('Error obtaining token. ' + error);
-        }
-    };
+export async function loginUser(username, password) {
+    try {
+        const response = await obtainToken(username, password);
+        const userRes = await axiosAPI.get('user');
+        store.dispatch(authSlice.actions.loginUserSuccess({
+            tokens: response.data,
+            user: userRes.data,
+        }));
+    } catch (error) {
+        console.log('Error obtaining token. ' + error);
+    }
 }
 
-export function logoutUser() {
-    return async function (dispatch) {
-        await logout();
-        dispatch(authSlice.actions.logoutUser());
-    };
+export async function logoutUser() {
+    await logout();
+    store.dispatch(authSlice.actions.logoutUser());
 }

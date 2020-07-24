@@ -1,13 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Acris from './components/containers/Acris';
+import Acris from './components/Acris';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Acris/>
-    </React.StrictMode>,
+    <Acris/>,
     document.getElementById('root')
 );
 

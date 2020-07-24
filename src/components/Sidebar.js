@@ -5,8 +5,9 @@ import {
     NavItem,
     NavList, PageSidebar,
 } from '@patternfly/react-core'
+import {withRouter} from "react-router-dom";
 
-export default class Sidebar extends React.Component {
+class Sidebar extends React.Component {
 
     render() {
         const PageNav = (
@@ -16,8 +17,7 @@ export default class Sidebar extends React.Component {
                     <NavItem>Albums</NavItem>
                     <NavItem>Artists</NavItem>
                     <NavItem>Genres</NavItem>
-                    <NavItem>Playlists</NavItem>
-                    <NavItem to="/login">Login</NavItem>
+                    <NavItem preventDefault onClick={() => this.props.history.push('/playlists')}>Playlists</NavItem>
                 </NavList>
             </Nav>
         );
@@ -25,3 +25,5 @@ export default class Sidebar extends React.Component {
         return <PageSidebar nav={PageNav}/>
     }
 }
+
+export default withRouter(Sidebar)
