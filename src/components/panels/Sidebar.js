@@ -26,17 +26,28 @@ class Sidebar extends React.Component {
         }
     }
 
+    disabledStyle() {
+        if (this.props.collection === null) {
+            return {color: "#9e9e9e"};
+        } else {
+            return {cursor: "pointer"};
+        }
+    }
+
     render() {
+
+        const CustomNavItem = (props) => <NavItem preventDefault onClick={this.navClick(props.link)}><span style={this.disabledStyle()}>{props.text}</span></NavItem>
+
         const PageNav = (
             <Nav theme="light">
                 <NavList>
-                    <NavItem preventDefault onClick={this.navClick('tracks')}>Tracks</NavItem>
-                    <NavItem preventDefault onClick={this.navClick('albums')}>Albums</NavItem>
-                    <NavItem preventDefault onClick={this.navClick('artists')}>Artists</NavItem>
-                    <NavItem preventDefault onClick={this.navClick('genres')}>Genres</NavItem>
-                    <NavItem preventDefault onClick={this.navClick('playlists')}>Playlists</NavItem>
+                    <CustomNavItem link="tracks" text="Tracks"/>
+                    <CustomNavItem link="albums" text="Albums"/>
+                    <CustomNavItem link="artists" text="Artists"/>
+                    <CustomNavItem link="genres" text="Genres"/>
+                    <CustomNavItem link="playlists" text="Playlists"/>
                     <Divider/>
-                    <NavItem preventDefault onClick={this.navClick('upload')}>Upload</NavItem>
+                    <CustomNavItem link="upload" text="Upload"/>
                 </NavList>
             </Nav>
         );

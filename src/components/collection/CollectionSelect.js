@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
 import {store} from "../../redux/store";
 import {switchCollection} from "../../redux/slices/playerSlice";
 import {getCollectionsList} from "../../redux/actions/collection";
+import {push} from "connected-react-router";
 
 import './CollectionSwitch.css';
 
@@ -12,13 +12,18 @@ import {
     Text,
     TextVariants,
     PageSection,
-    PageSectionVariants,
     Gallery,
     Card,
     CardBody,
-    CardTitle, Spinner
+    CardTitle,
+    EmptyStateIcon,
+    EmptyState,
+    Title,
+    EmptyStateBody,
+    Button
 } from '@patternfly/react-core';
 import {Icon} from '@fluentui/react/lib/Icon';
+import LoadingComponent from "../LoadingComponent";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -45,8 +50,22 @@ class CollectionSelect extends React.Component {
 
     render() {
         if (this.state.loading) {
-            return <Spinner/>
+            // still loading
+            return <LoadingComponent/>
+        } else if (this.state.collections.length === 0) {
+            // no collection
+            return (
+                <EmptyState>
+                    <EmptyStateIcon icon={<Icon iconName=""/>}/>
+                    <Title headingLevel="h4" size="lg">No Music Collections</Title>
+                    <EmptyStateBody>
+                        Create a new music collection, or ask another user to be invited to view their music collections.
+                    </EmptyStateBody>
+                    <Button variant="primary" onClick={() => store.dispatch(push('/new-collection'))}>Create Collection</Button>
+                </EmptyState>
+            );
         } else {
+            // collections
             return (
                 <React.Fragment>
                     <PageSection>
@@ -69,7 +88,7 @@ class CollectionSelect extends React.Component {
                                 </Card>
                             ))}
 
-                            <Card isHoverable key="Card-New" className="collection-card">
+                            <Card isHoverable key="Card-New" className="collection-card" onClick={() => store.dispatch(push('/new-collection'))}>
                                 <CardTitle>New Collection</CardTitle>
                                 <CardBody>
                                     <Icon iconName="Add"/>
@@ -84,4 +103,4 @@ class CollectionSelect extends React.Component {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(CollectionSelect));
+export default connect(mapStateToProps)(CollectionSelect);

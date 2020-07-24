@@ -4,7 +4,6 @@ import {withRouter} from "react-router-dom";
 import {
     Button,
     PageSection,
-    PageSectionVariants,
     Text,
     TextContent,
     TextVariants,

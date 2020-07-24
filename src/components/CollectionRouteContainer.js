@@ -24,12 +24,11 @@ class CollectionRouteContainer extends React.Component {
 
     componentWillMount() {
         // update collection if the url collectionId has changed
-        let {collectionId} = useParams();
+        let {collectionId} = this.props.match.params;
         this.unlisten = this.props.history.listen((location, action) => {
             console.log("History url change trigger");
 
             if (typeof collectionId === 'undefined') {
-                
                 store.dispatch(switchCollection(null));
             } else if (this.props.collection.id !== collectionId) {
                 getCollection(collectionId).then(col => {

@@ -10,6 +10,7 @@ import LandingPage from "./Landing";
 import Login from "./Login";
 import PlayerPanel from "./panels/PlayerPanel";
 import CollectionContainer from "./CollectionRouteContainer";
+import NewCollectionForm from "./collection/NewCollectionForm";
 
 const mapStateToProps = state => ({
     user: state.auth.user,
@@ -47,6 +48,7 @@ class AcrisContainer extends React.Component {
                 <Page isManagedSidebar header={<Header/>} sidebar={(this.props.user === null) ? <React.Fragment/> : <Sidebar/>}>
                     <Switch>
                         <PrivateRoute exact path="/"><LandingPage/></PrivateRoute>
+                        <PrivateRoute exact path="/new-collection"><NewCollectionForm/></PrivateRoute>
                         <PrivateRoute path="/collection/:collectionId"><CollectionContainer/></PrivateRoute>
                         <Route exact path="/login"><Login/></Route>
                     </Switch>
