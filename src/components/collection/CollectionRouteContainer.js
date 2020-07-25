@@ -2,13 +2,14 @@ import React from "react";
 import {Route, Switch, useParams, withRouter} from "react-router-dom";
 
 import {connect} from "react-redux";
-import {store} from "../redux/store";
+import {store} from "../../redux/store";
 
 import {Spinner} from "@patternfly/react-core";
 
-import {getCollection} from "../api/collection";
-import UploadComponent from "./UploadComponent";
-import {switchCollection} from "../redux/slices/playerSlice";
+import {getCollection} from "../../api/collection";
+import UploadComponent from "../UploadComponent";
+import {switchCollection} from "../../redux/slices/playerSlice";
+import LoadingComponent from "../util/LoadingComponent";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -18,7 +19,7 @@ class CollectionRouteContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
+            loading: this.props.collection == null,
         }
     }
 
@@ -32,6 +33,7 @@ class CollectionRouteContainer extends React.Component {
                 store.dispatch(switchCollection(null));
             } else if (this.props.collection.id !== collectionId) {
                 getCollection(collectionId).then(col => {
+
                     if (col == null) {
                         // TODO 404
                         console.log('404, collection not found');
@@ -39,6 +41,7 @@ class CollectionRouteContainer extends React.Component {
                         this.setState({loading: false});
                         store.dispatch(switchCollection(col));
                     }
+
                 });
             }
         });
@@ -51,7 +54,7 @@ class CollectionRouteContainer extends React.Component {
     render() {
         if (this.state.loading) {
             return (
-                <Spinner/>
+                <LoadingComponent/>
             )
         } else {
             return (

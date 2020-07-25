@@ -36,7 +36,7 @@ class Sidebar extends React.Component {
 
     render() {
 
-        const CustomNavItem = (props) => <NavItem preventDefault onClick={this.navClick(props.link)}><span style={this.disabledStyle()}>{props.text}</span></NavItem>
+        const CustomNavItem = (props) => <NavItem className="navItem" preventDefault onClick={this.navClick(props.link)}><span style={this.disabledStyle()}>{props.text}</span></NavItem>
 
         const PageNav = (
             <Nav theme="light">

@@ -9,8 +9,6 @@ import {
     Form,
     FormGroup,
     PageSection,
-    PageSectionVariants,
-    TextContent,
     Title,
 } from "@patternfly/react-core";
 import {withRouter} from "react-router-dom";

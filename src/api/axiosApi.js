@@ -3,7 +3,7 @@ import {store} from "../redux/store";
 import {logoutUser} from"../redux/slices/authSlice";
 
 // TODO
-const baseURL = 'http://localhost:8000/api/';
+export const baseURL = 'http://localhost:8000/api/';
 const accessToken = localStorage.getItem('access_token');
 
 const axiosAPI = axios.create({

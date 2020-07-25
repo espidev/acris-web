@@ -14,9 +14,9 @@ class BreadcrumbComponent extends React.Component {
             <Breadcrumb>
                 {this.props.elements.map((element, index) => {
                     if (element.isActive) {
-                        return <BreadcrumbItem isActive>{element.display}</BreadcrumbItem>;
+                        return <BreadcrumbItem key={index} isActive>{element.display}</BreadcrumbItem>;
                     } else {
-                        return <BreadcrumbItem className='breadcrumbItem' onClick={() => this.props.history.push(element.link)}>{element.display}</BreadcrumbItem>;
+                        return <BreadcrumbItem key={index} className='breadcrumbItem' onClick={() => this.props.history.push(element.link)}>{element.display}</BreadcrumbItem>;
                     }
                 })}
             </Breadcrumb>

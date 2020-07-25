@@ -9,7 +9,7 @@ import Sidebar from "./panels/Sidebar";
 import LandingPage from "./Landing";
 import Login from "./Login";
 import PlayerPanel from "./panels/PlayerPanel";
-import CollectionContainer from "./CollectionRouteContainer";
+import CollectionContainer from "./collection/CollectionRouteContainer";
 import NewCollectionForm from "./collection/NewCollectionForm";
 
 const mapStateToProps = state => ({
