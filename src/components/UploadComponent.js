@@ -3,7 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 import {
-    Button, EmptyState, EmptyStateBody, EmptyStateIcon, EmptyStateVariant, PageSection, Text,
+    Button, EmptyState, EmptyStateBody, EmptyStateIcon, EmptyStateVariant, Form, PageSection, Text,
     TextContent,
     TextVariants, Title
 } from "@patternfly/react-core";
@@ -11,6 +11,7 @@ import {
 import Dropzone from "react-dropzone";
 import {Icon} from '@fluentui/react/lib/Icon';
 import BreadcrumbComponent from "./util/BreadcrumbComponent";
+import {uploadToCollection} from "../api/collection";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -21,17 +22,50 @@ class UploadComponent extends React.Component {
         super(props);
         this.state = {
             files: [],
+            file: null,
+        }
+
+        this.handleFileChange = (e) => {
+            console.log(e.target.files)
+            this.setState({
+                files: e.target.files,
+                file: e.target.files[0],
+            })
+        }
+
+        this.handleSubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append("audioFile", this.state.file, this.state.file.name);
+
+            try {
+               console.log("Uploading file " + this.state.file.name);
+               const response = await uploadToCollection(this.props.collection.id, formData);
+               console.log("Response: " + JSON.stringify(response));
+            } catch (e) {
+               console.log("Failed to upload file: " + e);
+            }
+            // for (let i = 0; i < this.state.files.length; i++) {
+            //     let file = this.state.files[i];
+            //     try {
+            //         console.log("Uploading file " + file.name);
+            //         const response = await uploadToCollection(this.props.collection.id, file);
+            //         console.log("Response: " + JSON.stringify(response));
+            //     } catch (e) {
+            //         console.log("Failed to upload file: " + e);
+            //     }
+            // }
         }
     }
 
     render() {
         const UploadBox = () => {
             return (
-                <Dropzone onDrop={files => this.setState({files: files})}>
-
+                <Dropzone onDrop={files => this.setState({files: files})} multiple>
                     {({getRootProps, getInputProps}) => (
                         <div {...getRootProps({className: 'dropzone'})}>
-                            <input {...getInputProps()}/>
+                            <input {...getInputProps()} type="file" accept="audio/*" onChange={this.handleFileChange} required/>
 
                             <EmptyState variant={EmptyStateVariant.small}>
                                 <EmptyStateIcon icon={() => <Icon style={{fontSize: "64px"}} iconName="Upload"/>}/>
@@ -39,20 +73,11 @@ class UploadComponent extends React.Component {
                                     Drag to upload
                                 </Title>
                                 <EmptyStateBody>
-                                    Audio files only.
+                                    Click to open file dialog. Audio files only.
                                 </EmptyStateBody>
-                                <Button variant="primary">Open File Dialog</Button>
-                                <ul style={{marginTop: "20px"}}>
-                                    {this.state.files.map(file => (
-                                        <li key={file.path}>
-                                            {file.path} - {file.size} bytes
-                                        </li>
-                                    ))}
-                                </ul>
                             </EmptyState>
                         </div>
                     )}
-
                 </Dropzone>
             )
         }
@@ -87,8 +112,19 @@ class UploadComponent extends React.Component {
                         <Text component={TextVariants.p}>The uploader supports multiple files as well.</Text>
                     </TextContent>
                 </PageSection>
-                <PageSection>
-                    <UploadBox/>
+                <PageSection style={{textAlign: "center"}}>
+                    <Form onSubmit={this.handleSubmit}>
+                        <UploadBox/>
+                        <Button style={{maxWidth: "96px", textAlign: "center"}} type="submit" variant="primary">Submit</Button>
+
+                        <ul style={{marginTop: "20px"}}>
+                            {[...this.state.files].map(file => (
+                                <li key={file.name}>
+                                    {file.name} - {file.size} bytes
+                                </li>
+                            ))}
+                        </ul>
+                    </Form>
                 </PageSection>
             </React.Fragment>
         );

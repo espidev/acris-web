@@ -40,12 +40,19 @@ class CollectionSelect extends React.Component {
     }
 
     componentDidMount() {
+        this.mounted = true;
         getCollectionsList().then(c => {
-            this.setState({
-                collections: c,
-                loading: false,
-            })
+            if (this.mounted) {
+                this.setState({
+                    collections: c,
+                    loading: false,
+                });
+            }
         });
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
     render() {

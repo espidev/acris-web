@@ -1,0 +1,31 @@
+/* ~~~ Page Transitions ~~~ */
+
+.slideTransition-appear {
+    transform: translateY(20px);
+    opacity: 0;
+}
+.slideTransition-appear.slideTransition-appear-active {
+    transform: translateY(0);
+    opacity: 1;
+    transition: all 0.4s;
+}
+.slideTransition-enter {
+    transform: translateY(20px);
+    opacity: 0;
+}
+.slideTransition-enter.slideTransition-enter-active {
+    transform: translateY(0);
+    opacity: 1;
+    transition: all 0.4s;
+}
+.slideTransition-leave {
+    transform: translateY(0);
+    opacity: 1;
+}
+.slideTransition-leave.slideTransition-leave-active {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    transform: translateY(-30px);
+    transition: all 0.2s;
+}

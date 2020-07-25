@@ -11,10 +11,9 @@ import {
 
 import {CogIcon, HelpIcon} from "@patternfly/react-icons";
 import HeaderProfileDropdown from "./HeaderProfileDropdown";
-import {store} from "../../redux/store";
-import {push} from "connected-react-router";
+import {withRouter} from "react-router-dom";
 
-export default class Header extends React.Component {
+class Header extends React.Component {
 
     render() {
         const headerTools = (
@@ -40,6 +39,8 @@ export default class Header extends React.Component {
             </PageHeaderTools>
         );
 
-        return <PageHeader logo={<h1 onClick={() => store.dispatch(push('/'))}>Acris</h1>} headerTools={headerTools}/>;
+        return <PageHeader logo={<h1 onClick={() => this.props.history.push('/')}>Acris</h1>} headerTools={headerTools}/>;
     }
 }
+
+export default withRouter(Header);
