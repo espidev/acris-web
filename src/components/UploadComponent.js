@@ -13,6 +13,8 @@ import {Icon} from '@fluentui/react/lib/Icon';
 import BreadcrumbComponent from "./util/BreadcrumbComponent";
 import {uploadToCollection} from "../api/collection";
 
+import './UploadComponent.css';
+
 const mapStateToProps = state => ({
     collection: state.player.collection,
 });
@@ -22,6 +24,8 @@ class UploadComponent extends React.Component {
         super(props);
         this.state = {
             files: [],
+            uploaded: [],
+            errored: [],
             file: null,
         }
 
@@ -30,32 +34,32 @@ class UploadComponent extends React.Component {
             this.setState({
                 files: e.target.files,
                 file: e.target.files[0],
+                uploaded: [],
+                errored: [],
             })
         }
 
         this.handleSubmit = async (e) => {
             e.preventDefault();
 
-            const formData = new FormData();
-            formData.append("audioFile", this.state.file, this.state.file.name);
+            // loop files
+            for (let i = 0; i < this.state.files.length; i++) {
+                let file = this.state.files[i];
+                const formData = new FormData();
+                formData.append("file", file, file.name);
+                try {
+                    console.log("Uploading file " + file.name);
+                    const response = await uploadToCollection(this.props.collection.id, formData, file.name);
+                    console.log("Response: " + JSON.stringify(response));
 
-            try {
-               console.log("Uploading file " + this.state.file.name);
-               const response = await uploadToCollection(this.props.collection.id, formData);
-               console.log("Response: " + JSON.stringify(response));
-            } catch (e) {
-               console.log("Failed to upload file: " + e);
+                    // update message
+                    this.setState({uploaded: this.state.uploaded.concat([file.name])});
+                } catch (e) {
+                    console.log("Failed to upload file: " + e);
+                    // update message
+                    this.setState({errored: this.state.errored.concat([file.name])});
+                }
             }
-            // for (let i = 0; i < this.state.files.length; i++) {
-            //     let file = this.state.files[i];
-            //     try {
-            //         console.log("Uploading file " + file.name);
-            //         const response = await uploadToCollection(this.props.collection.id, file);
-            //         console.log("Response: " + JSON.stringify(response));
-            //     } catch (e) {
-            //         console.log("Failed to upload file: " + e);
-            //     }
-            // }
         }
     }
 
@@ -80,6 +84,16 @@ class UploadComponent extends React.Component {
                     )}
                 </Dropzone>
             )
+        }
+
+        const FileState = (props) => {
+            if (this.state.uploaded.includes(props.file.name)) {
+                return " (Uploaded)";
+            } else if (this.state.errored.includes(props.file.name)) {
+                return " (Error)";
+            } else {
+                return "";
+            }
         }
 
         const breadcrumbElements = [
@@ -113,18 +127,18 @@ class UploadComponent extends React.Component {
                     </TextContent>
                 </PageSection>
                 <PageSection style={{textAlign: "center"}}>
-                    <Form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit} ref="form">
                         <UploadBox/>
-                        <Button style={{maxWidth: "96px", textAlign: "center"}} type="submit" variant="primary">Submit</Button>
+                        <input className="submitButton" type="submit" value="Submit"/>
 
                         <ul style={{marginTop: "20px"}}>
                             {[...this.state.files].map(file => (
                                 <li key={file.name}>
-                                    {file.name} - {file.size} bytes
+                                    {file.name} - {file.size} bytes <FileState file={file}/>
                                 </li>
                             ))}
                         </ul>
-                    </Form>
+                    </form>
                 </PageSection>
             </React.Fragment>
         );

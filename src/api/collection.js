@@ -18,9 +18,9 @@ export async function createCollection(name, user_id, is_public) {
     });
 }
 
-export function uploadToCollection(collectionId, formData) {
-    return axiosAPI.post(baseURL + 'collection/' + collectionId + '/upload/', formData, {headers: {
+export function uploadToCollection(collectionId, formData, fileName) {
+    return axiosAPI.put(baseURL + 'collection/' + collectionId + '/upload/', formData, {headers: {
         'Content-Type': 'multipart/form-data',
-        // 'Content-Disposition': 'attachment; filename=' + encodeURI(file.name),
+        'Content-Disposition': 'attachment; filename=' + encodeURI(fileName),
     }});
 }
