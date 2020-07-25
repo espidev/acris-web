@@ -21,6 +21,7 @@ class CollectionLanding extends React.Component {
         super(props);
 
         this.onSwitchPressed = () => {
+            this.props.history.push('/');
             store.dispatch(switchCollection(null));
         }
     }

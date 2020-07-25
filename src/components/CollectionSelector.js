@@ -9,11 +9,9 @@ import {connect} from "react-redux";
 import {store} from "../redux/store";
 import {switchCollection} from "../redux/slices/playerSlice";
 
-const mapStateToProps = state => (
-    {
+const mapStateToProps = state => ({
         selectedCollection: state.player.collection,
-    }
-);
+    });
 
 // unused
 

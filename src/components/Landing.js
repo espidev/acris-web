@@ -1,23 +1,22 @@
 import React from 'react';
-import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 
 import CollectionSelect from "./collection/CollectionSelect";
-import CollectionLanding from "./collection/CollectionLanding";
-
-const mapStateToProps = state => ({
-    collection: state.player.collection,
-});
+import {store} from "../redux/store";
+import {switchCollection} from "../redux/slices/playerSlice";
 
 class LandingPage extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        // switch out of collection
+        store.dispatch(switchCollection(null));
+    }
+
     render() {
-        if (this.props.collection === null) {
-            return <CollectionSelect/>
-        } else {
-            return <CollectionLanding/>
-        }
+        return <CollectionSelect/>
     }
 }
 
-export default withRouter(connect(mapStateToProps)(LandingPage));
+export default withRouter(LandingPage);

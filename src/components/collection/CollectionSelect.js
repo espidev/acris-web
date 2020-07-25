@@ -78,7 +78,10 @@ class CollectionSelect extends React.Component {
                         <Gallery hasGutter>
 
                             {this.state.collections.map((col, key) => (
-                                <Card isHoverable key={key} className="collection-card" onClick={() => store.dispatch(switchCollection(col))}>
+                                <Card isHoverable key={key} className="collection-card" onClick={() => {
+                                    store.dispatch(switchCollection(col));
+                                    this.props.history.push('/collection/' + col.id);
+                                }}>
                                     <CardTitle>{col.name}</CardTitle>
                                     <CardBody>
                                         Owners: {JSON.stringify(col.owners)}

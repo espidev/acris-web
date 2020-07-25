@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
     navClick(path) {
         return () => {
             if (this.props.collection !== null) {
-                this.props.history.push('/collection/' + this.props.collection.name + '/' + path);
+                this.props.history.push('/collection/' + this.props.collection.id + '/' + path);
             }
         }
     }
@@ -35,8 +35,11 @@ class Sidebar extends React.Component {
     }
 
     render() {
-
-        const CustomNavItem = (props) => <NavItem className="navItem" preventDefault onClick={this.navClick(props.link)}><span style={this.disabledStyle()}>{props.text}</span></NavItem>
+        const CustomNavItem = (props) => (
+            <NavItem className="navItem" preventDefault onClick={this.navClick(props.link)}>
+                <span style={this.disabledStyle()}>{props.text}</span>
+            </NavItem>
+        );
 
         const PageNav = (
             <Nav theme="light">

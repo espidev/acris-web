@@ -10,6 +10,7 @@ import {getCollection} from "../../api/collection";
 import UploadComponent from "../UploadComponent";
 import {switchCollection} from "../../redux/slices/playerSlice";
 import LoadingComponent from "../util/LoadingComponent";
+import CollectionLanding from "./CollectionLanding";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -23,15 +24,14 @@ class CollectionRouteContainer extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         // update collection if the url collectionId has changed
         let {collectionId} = this.props.match.params;
         this.unlisten = this.props.history.listen((location, action) => {
-            console.log("History url change trigger");
-
             if (typeof collectionId === 'undefined') {
                 store.dispatch(switchCollection(null));
-            } else if (this.props.collection.id !== collectionId) {
+            } else if ('' + this.props.collection.id !== ''+collectionId) {
+                console.log("History url change to " + collectionId);
                 getCollection(collectionId).then(col => {
 
                     if (col == null) {
@@ -59,6 +59,7 @@ class CollectionRouteContainer extends React.Component {
         } else {
             return (
                 <Switch>
+                    <Route exact path="/collection/:collectionId"><CollectionLanding/></Route>
                     <Route exact path="/collection/:collectionId/tracks"/>
                     <Route exact path="/collection/:collectionId/albums"/>
                     <Route exact path="/collection/:collectionId/artists"/>
