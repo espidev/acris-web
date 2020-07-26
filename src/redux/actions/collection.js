@@ -19,3 +19,4 @@ export async function getCollection(id) {
     }
     return null;
 }
+

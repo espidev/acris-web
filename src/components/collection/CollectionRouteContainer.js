@@ -10,6 +10,7 @@ import {switchCollection} from "../../redux/slices/playerSlice";
 import LoadingComponent from "../util/LoadingComponent";
 import CollectionLanding from "./CollectionLanding";
 import RouteTransition from "../util/RouteTransition";
+import TrackList from "../TrackList";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -59,7 +60,7 @@ class CollectionRouteContainer extends React.Component {
             return (
                 <Switch>
                     <Route exact path="/collection/:collectionId" component={RouteTransition(CollectionLanding)}/>
-                    <Route exact path="/collection/:collectionId/tracks"/>
+                    <Route exact path="/collection/:collectionId/tracks" component={RouteTransition(TrackList)}/>
                     <Route exact path="/collection/:collectionId/albums"/>
                     <Route exact path="/collection/:collectionId/artists"/>
                     <Route exact path="/collection/:collectionId/genres"/>

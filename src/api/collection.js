@@ -9,13 +9,17 @@ export async function getCollection(id) {
     return await axiosAPI.get('collection/' + id);
 }
 
-export async function createCollection(name, user_id, is_public) {
+export async function createCollection(name, userId, isPublic) {
     return await axiosAPI.post('collections/', {
         name: name,
-        owners: [user_id],
+        owners: [userId],
         viewers: [],
-        is_public: is_public,
+        is_public: isPublic,
     });
+}
+
+export async function getTracks(collectionId) {
+    return await axiosAPI.get('collection/' + collectionId + '/tracks/');
 }
 
 export function uploadToCollection(collectionId, formData, fileName) {
