@@ -32,7 +32,7 @@ class NewCollectionForm extends React.Component {
         this.handleFormSubmit = e => {
             e.preventDefault();
 
-            createCollection(this.state.name, this.props.user, this.state.isPublic)
+            createCollection(this.state.name, this.props.user.id, this.state.isPublic)
                 .then(res => {
                     this.setState({alerts: addAlert(this.state.alerts, 'Created collection ' + res.data.name, 'success', getUniqueId())});
                     this.props.history.push('/collection/' + res.data.id);

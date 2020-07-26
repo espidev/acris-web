@@ -1,18 +1,12 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {store} from "../../redux/store";
-import {switchCollection} from "../../redux/slices/playerSlice";
 import {getCollectionsList} from "../../redux/actions/collection";
-
-import './CollectionSelect.css';
 
 import {
     TextContent,
     Text,
     TextVariants,
     PageSection,
-    Gallery,
-    Card,
     CardBody,
     CardTitle,
     EmptyStateIcon,
@@ -24,6 +18,8 @@ import {
 import {Icon} from '@fluentui/react/lib/Icon';
 import LoadingComponent from "../util/LoadingComponent";
 import {withRouter} from "react-router-dom";
+import CardComponent from "../util/CardComponent";
+import CardLayout from "../util/CardLayout";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -82,30 +78,26 @@ class CollectionSelect extends React.Component {
                         </TextContent>
                     </PageSection>
                     <PageSection>
-                        <Gallery hasGutter>
+                        <CardLayout>
 
                             {this.state.collections.map((col, key) => (
-                                <Card isHoverable key={key} className="collection-card" onClick={() => {
-                                    store.dispatch(switchCollection(col));
-                                    this.props.history.push('/collection/' + col.id);
-                                }}>
+                                <CardComponent width="15em" url={'/collection/' + col.id} key={key}>
                                     <CardTitle>{col.name}</CardTitle>
                                     <CardBody>
                                         Owners: {JSON.stringify(col.owners)}
                                         <br/>
                                         Viewers: {JSON.stringify(col.viewers)}
                                     </CardBody>
-                                </Card>
+                                </CardComponent>
                             ))}
 
-                            <Card isHoverable key="Card-New" className="collectionCard" onClick={() => this.props.history.push('/new-collection')}>
-                                <CardTitle>New Collection</CardTitle>
-                                <CardBody>
-                                    <Icon iconName="Add"/>
+                            <CardComponent width="15em" url={'/new-collection'} key="newCard">
+                                <CardBody style={{textAlign: "center"}}>
+                                    <Icon className="cardIcon" iconName="Add"/>
                                 </CardBody>
-                            </Card>
-
-                        </Gallery>
+                                <CardTitle style={{textAlign: "center"}}>New Collection</CardTitle>
+                            </CardComponent>
+                        </CardLayout>
                     </PageSection>
                 </React.Fragment>
             );

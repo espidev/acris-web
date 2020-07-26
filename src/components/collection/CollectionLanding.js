@@ -1,52 +1,38 @@
 import React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {store} from "../../redux/store";
 
 import {
-    Button,
-    Card,
     CardBody,
     CardTitle,
-    Gallery,
     PageSection,
     Text,
     TextContent,
-    TextVariants,
-    ToolbarItem
+    TextVariants
 } from "@patternfly/react-core";
-import {switchCollection} from "../../redux/slices/playerSlice";
 import LoadingComponent from "../util/LoadingComponent";
 import {Icon} from "@fluentui/react/lib/Icon";
 import './CollectionLanding.css'
 import BreadcrumbComponent from "../util/BreadcrumbComponent";
+import CardComponent from "../util/CardComponent";
+import CardLayout from "../util/CardLayout";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
 });
 
 class CollectionLanding extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.onSwitchPressed = () => {
-            this.props.history.push('/');
-            store.dispatch(switchCollection(null));
-        }
-    }
 
     render() {
         if (this.props.collection !== null) {
 
             const SelectCard = props => (
-                <a href={props.url} onClick={e => e.preventDefault()} className="cardLink">
-                    <Card isHoverable className="collectionActionCard" onClick={() => this.props.history.push(props.url)}>
-                        <CardBody style={{textAlign: "center"}}>
-                            <Icon className="cardIcon" iconName={props.icon}/>
-                        </CardBody>
-                        <CardTitle style={{textAlign: "center"}}>{props.title}</CardTitle>
-                    </Card>
-                </a>
+                <CardComponent width="10em" url={props.url}>
+                    <CardBody style={{textAlign: "center"}}>
+                        <Icon className="cardIcon" iconName={props.icon}/>
+                    </CardBody>
+                    <CardTitle style={{textAlign: "center"}}>{props.title}</CardTitle>
+                </CardComponent>
             );
 
             const breadcrumbElements = [
@@ -76,14 +62,14 @@ class CollectionLanding extends React.Component {
                         </TextContent>
                     </PageSection>
                     <PageSection>
-                        <div className="collectionActionLayout">
+                        <CardLayout>
                             <SelectCard url={'/collection/' + this.props.collection.id + '/tracks'} title='Tracks' icon='MusicInCollection'/>
                             <SelectCard url={'/collection/' + this.props.collection.id + '/albums'} title='Albums' icon='Album'/>
                             <SelectCard url={'/collection/' + this.props.collection.id + '/artists'} title='Artists' icon='Contact'/>
                             <SelectCard url={'/collection/' + this.props.collection.id + '/genres'} title='Genres' icon='AssessmentGroup'/>
                             <SelectCard url={'/collection/' + this.props.collection.id + '/playlists'} title='Playlists' icon='BulletedListMirrored'/>
                             <SelectCard url={'/collection/' + this.props.collection.id + '/upload'} title='Upload' icon='Upload'/>
-                        </div>
+                        </CardLayout>
                     </PageSection>
                 </React.Fragment>
             );

@@ -1,6 +1,0 @@
-.collectionCard {
-    transition: box-shadow 0.2s;
-}
-.collectionCard:hover {
-    cursor: pointer;
-}

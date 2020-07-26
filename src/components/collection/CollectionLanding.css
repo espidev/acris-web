@@ -1,21 +1,7 @@
-.collectionActionCard {
-    transition: box-shadow 0.2s;
-    text-decoration: none;
-    color: rgb(21, 21, 21);
-    width: 10em;
-    margin-right: 2em;
-}
-.collectionActionCard:hover {
-    cursor: pointer;
-    outline: 0;
-}
-.cardLink {
-    text-decoration: none;
+.collectionActionLayout {
+    display: flex;
 }
 .cardIcon {
     font-size: 32px;
     text-align: center;
-}
-.collectionActionLayout {
-    display: flex;
 }

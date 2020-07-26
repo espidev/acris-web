@@ -1,5 +1,4 @@
 import axiosAPI, {baseURL} from './axiosApi';
-import axios from 'axios';
 
 export async function listCollections() {
     return await axiosAPI.get('collections');
