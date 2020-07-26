@@ -9,10 +9,10 @@ export async function getCollection(id) {
     return await axiosAPI.get('collection/' + id);
 }
 
-export async function createCollection(name, userId, isPublic) {
-    return await axiosAPI.post('collections/', {
+export function createCollection(name, userId, isPublic) {
+    return axiosAPI.post('collections/', {
         name: name,
-        owners: [userId],
+        owners: [''+userId],
         viewers: [],
         is_public: isPublic,
     });
