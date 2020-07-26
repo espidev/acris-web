@@ -98,7 +98,7 @@ class CollectionSelect extends React.Component {
                                 </Card>
                             ))}
 
-                            <Card isHoverable key="Card-New" className="collection-card" onClick={() => this.props.history.push('/new-collection')}>
+                            <Card isHoverable key="Card-New" className="collectionCard" onClick={() => this.props.history.push('/new-collection')}>
                                 <CardTitle>New Collection</CardTitle>
                                 <CardBody>
                                     <Icon iconName="Add"/>
