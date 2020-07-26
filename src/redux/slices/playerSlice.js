@@ -10,6 +10,7 @@ export const playerSlice = createSlice({
         originalTrackQueue: [],
         track: null,
         playing: false,
+        isShuffled: false,
     },
     reducers: { // immer copies the state beforehand
         switchCollection: (state , action) => {
@@ -20,6 +21,7 @@ export const playerSlice = createSlice({
             state.originalTrackQueue = [];
             state.playing = false;
             state.track = null;
+            state.isShuffled = false;
         },
         changeTrack: (state, action) => {
             state.queueIndex = 0;
@@ -27,20 +29,23 @@ export const playerSlice = createSlice({
             state.originalTrackQueue = action.payload.trackQueue;
             state.track = action.payload.track;
             state.playing = false;
+            state.isShuffled = false;
         },
         shuffleQueue: state => {
-            let curIndex = state.trackQueue.length, temp, randomIndex;
+            state.isShuffling = true;
+            let curIndex = state.trackQueue.length - state.queueIndex, temp, randomIndex;
 
             while (0 !== curIndex) {
                 randomIndex = Math.floor(Math.random() * curIndex);
                 curIndex--;
 
-                temp = state.trackQueue[curIndex];
-                state.trackQueue[curIndex] = state.trackQueue[randomIndex];
-                state.trackQueue[randomIndex] = temp;
+                temp = state.trackQueue[curIndex + state.queueIndex];
+                state.trackQueue[curIndex + state.queueIndex] = state.trackQueue[randomIndex + state.queueIndex];
+                state.trackQueue[randomIndex + state.queueIndex] = temp;
             }
         },
         unshuffleQueue: state => {
+            state.isShuffling = false;
             state.queue = state.originalTrackQueue;
         },
         play: state => {
@@ -69,10 +74,11 @@ export const playerSlice = createSlice({
             state.originalTrackQueue = [];
             state.track = null;
             state.playing = false;
+            state.isShuffled = false;
         }
     },
 });
 
-export const { play, pause, changeTrack, switchCollection } = playerSlice.actions;
+export const { shuffleQueue, unshuffleQueue, nextTrack, prevTrack, stop, play, pause, changeTrack, switchCollection } = playerSlice.actions;
 
 export default playerSlice.reducer;

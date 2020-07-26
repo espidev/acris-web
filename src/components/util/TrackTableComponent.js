@@ -5,6 +5,7 @@ import {EmptyState, EmptyStateBody, EmptyStateIcon, Title} from "@patternfly/rea
 import {Icon} from "@fluentui/react";
 import "./TrackTableComponent.css"
 import {store} from "../../redux/store";
+import {changeTrack} from "../../redux/slices/playerSlice";
 
 const mapStateToProps = state => ({
     currentTrack: state.player.track,
@@ -24,7 +25,10 @@ class TrackTableComponent extends React.Component {
             if (trackIndex !== undefined) {
                 trackIndex--;
 
-                store.dispatch();
+                store.dispatch(changeTrack({
+                    track: this.state.tracks[trackIndex],
+                    trackQueue: this.state.tracks,
+                }));
             }
         };
     }
