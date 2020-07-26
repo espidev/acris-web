@@ -4,11 +4,11 @@
     box-shadow: 1px 0px 15px 0 #b8bbbe;
     overflow: hidden;
     width: 100%;
-    padding: 6px;
+    padding: 0.375em;
     position: fixed;
     bottom: 0;
     z-index: 10000;
-    height: 64px;
+    height: 4em;
     display: flex;
     align-items: center;
     justify-content: space-between

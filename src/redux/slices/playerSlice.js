@@ -4,21 +4,29 @@ export const playerSlice = createSlice({
     name: 'player',
     initialState: {
         collection: null,
-        trackQueue: [],
 
+        queueIndex: 0,
+        trackQueue: [],
+        originalTrackQueue: [],
         track: null,
         playing: false,
     },
     reducers: { // immer copies the state beforehand
         switchCollection: (state , action) => {
             state.collection = action.payload;
-            state.queue = [];
+
+            state.queueIndex = 0;
+            state.trackQueue = [];
+            state.originalTrackQueue = [];
             state.playing = false;
             state.track = null;
         },
         changeTrack: (state, action) => {
-            state.track = action.payload.track;
+            state.queueIndex = 0;
             state.trackQueue = action.payload.trackQueue;
+            state.originalTrackQueue = action.payload.trackQueue;
+            state.track = action.payload.track;
+            state.playing = false;
         },
         shuffleQueue: state => {
             let curIndex = state.trackQueue.length, temp, randomIndex;
@@ -32,12 +40,36 @@ export const playerSlice = createSlice({
                 state.trackQueue[randomIndex] = temp;
             }
         },
+        unshuffleQueue: state => {
+            state.queue = state.originalTrackQueue;
+        },
         play: state => {
-            state.playing = true;
+            if (state.track !== null) {
+                state.playing = true;
+            }
         },
         pause: state => {
             state.playing = false;
         },
+        prevTrack: state => {
+            if (state.queueIndex > 0) {
+                state.queueIndex--;
+                state.track = state.trackQueue[state.queueIndex];
+            }
+        },
+        nextTrack: state => {
+            if (state.queueIndex < state.trackQueue.length-1) {
+                state.queueIndex++;
+                state.track = state.trackQueue[state.queueIndex];
+            }
+        },
+        stop: state => {
+            state.queueIndex = 0;
+            state.trackQueue = [];
+            state.originalTrackQueue = [];
+            state.track = null;
+            state.playing = false;
+        }
     },
 });
 

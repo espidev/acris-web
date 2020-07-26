@@ -20,6 +20,8 @@ import LoadingComponent from "../util/LoadingComponent";
 import {withRouter} from "react-router-dom";
 import CardComponent from "../util/CardComponent";
 import CardLayout from "../util/CardLayout";
+import {store} from "../../redux/store";
+import {switchCollection} from "../../redux/slices/playerSlice";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -37,6 +39,10 @@ class CollectionSelect extends React.Component {
 
     componentDidMount() {
         this.mounted = true;
+
+        // no selected collection
+        store.dispatch(switchCollection(null));
+
         getCollectionsList().then(c => {
             if (this.mounted) {
                 this.setState({
@@ -59,7 +65,7 @@ class CollectionSelect extends React.Component {
             // no collection
             return (
                 <EmptyState>
-                    <EmptyStateIcon icon={<Icon iconName=""/>}/>
+                    <EmptyStateIcon icon={() => <Icon style={{fontSize: "4em"}} iconName="MusicInCollection"/>}/>
                     <Title headingLevel="h4" size="lg">No Music Collections</Title>
                     <EmptyStateBody>
                         Create a new music collection, or ask another user to be invited to view their music collections.
@@ -79,7 +85,6 @@ class CollectionSelect extends React.Component {
                     </PageSection>
                     <PageSection>
                         <CardLayout>
-
                             {this.state.collections.map((col, key) => (
                                 <CardComponent width="15em" url={'/collection/' + col.id} key={key}>
                                     <CardTitle>{col.name}</CardTitle>

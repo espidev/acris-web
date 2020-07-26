@@ -13,7 +13,7 @@ import {
 import LoadingComponent from "../util/LoadingComponent";
 import {Icon} from "@fluentui/react/lib/Icon";
 import './CollectionLanding.css'
-import BreadcrumbComponent from "../util/BreadcrumbComponent";
+import BreadcrumbComponent, {collectionBreadcrumb} from "../util/BreadcrumbComponent";
 import CardComponent from "../util/CardComponent";
 import CardLayout from "../util/CardLayout";
 
@@ -36,11 +36,7 @@ class CollectionLanding extends React.Component {
             );
 
             const breadcrumbElements = [
-                {
-                    link: '/',
-                    display: 'Collections',
-                    isActive: false,
-                },
+                collectionBreadcrumb,
                 {
                     link: '/collection/' + this.props.collection.id,
                     display: this.props.collection.name,

@@ -8,6 +8,7 @@
     text-rendering: optimizeLegibility;
     transition: text-decoration 0.3s;
     position: relative;
+    outline: 0;
 }
 
 .breadcrumbItem:before {

@@ -10,7 +10,7 @@ import {
 
 import Dropzone from "react-dropzone";
 import {Icon} from '@fluentui/react/lib/Icon';
-import BreadcrumbComponent from "./util/BreadcrumbComponent";
+import BreadcrumbComponent, {collectionBreadcrumb} from "./util/BreadcrumbComponent";
 import {uploadToCollection} from "../api/collection";
 
 import './UploadComponent.css';
@@ -72,7 +72,7 @@ class UploadComponent extends React.Component {
                             <input {...getInputProps()} type="file" accept="audio/*" onChange={this.handleFileChange} required/>
 
                             <EmptyState variant={EmptyStateVariant.small}>
-                                <EmptyStateIcon icon={() => <Icon style={{fontSize: "64px"}} iconName="Upload"/>}/>
+                                <EmptyStateIcon icon={() => <Icon style={{fontSize: "4em"}} iconName="Upload"/>}/>
                                 <Title headingLevel="h4" size="lg">
                                     Drag to upload
                                 </Title>
@@ -97,11 +97,7 @@ class UploadComponent extends React.Component {
         }
 
         const breadcrumbElements = [
-            {
-                link: '/',
-                display: 'Collections',
-                isActive: false,
-            },
+            collectionBreadcrumb,
             {
                 link: '/collection/' + this.props.collection.id,
                 display: this.props.collection.name,
