@@ -3,12 +3,12 @@ import {withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
 import {Icon} from '@fluentui/react/lib/Icon';
 
-import ReactAudioPlayer from 'react-audio-player';
 import './PlayerPanel.css'
 import {store} from "../../redux/store";
 import {play, pause, nextTrack, prevTrack, unshuffleQueue, shuffleQueue} from "../../redux/slices/playerSlice"
 
 import {baseURL} from "../../api/axiosApi";
+import {Text} from "@patternfly/react-core";
 
 const mapStateToProps = (state, ownProps) => {
     let newState = {
@@ -25,10 +25,26 @@ class PlayerPanel extends React.Component {
     constructor(props) {
         // props: audioPlayer (audio ref)
         super(props);
-        this.state = {}
+        this.state = {
+            currentElapsed: 0,
+            trackLength: 0,
+        }
 
         this.audioPlayer = React.createRef();
-        this.handleSliderChange = event => {};
+        this.handleSliderChange = event => {
+            this.audioPlayer.currentTime = event.target.value;
+        };
+    }
+
+    componentDidMount() {
+        // update slider bar
+        setInterval(() => {
+            if (this.audioPlayer !== null)
+                this.setState({
+                    currentElapsed: this.audioPlayer.currentTime,
+                    trackLength: this.audioPlayer.duration,
+                });
+        }, 500);
     }
 
     componentDidUpdate() {
@@ -42,6 +58,12 @@ class PlayerPanel extends React.Component {
     }
 
     render() {
+
+        const formatTime = (secs) => {
+            if (isNaN(secs)) return '0:00';
+            return (secs / 60) + ':' + (secs - Math.floor(secs / 60) * 60);
+        }
+
         return (
             <nav className="audio-player-panel">
 
@@ -54,9 +76,12 @@ class PlayerPanel extends React.Component {
                 </div>
 
                 <audio src={this.props.track == null ? "" : baseURL + "track/" + this.props.track.id + "/stream"}
-                    ref={(element) => {this.audioPlayer = element}} controls/>
+                    ref={(element) => {this.audioPlayer = element}}/>
 
-                <input type="range" min="0" max="100" value="50" className="duration-slider" onChange={this.handleSliderChange}/>
+                <span className="duration-text">{formatTime(this.props.currentElapsed)}</span>
+                <input type="range" min="0" max={this.state.trackLength} value={this.state.currentElapsed} className="duration-slider" onChange={this.handleSliderChange}/>
+                <span className="duration-text">{formatTime(this.props.trackLength)}</span>
+
                 <ul className="right-component">
                     <li className="media-clickable" onClick={() => store.dispatch(prevTrack())}><Icon iconName="Previous"/></li>
                     <li className="media-clickable" onClick={() => this.props.playing ? store.dispatch(pause()) : store.dispatch(play())}>

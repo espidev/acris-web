@@ -84,6 +84,7 @@ class TrackList extends React.Component {
                     <PageSection>
                         <TrackTableComponent tracks={this.state.tracks}/>
                     </PageSection>
+                    <div style={{height: "50px"}}/>
             </React.Fragment>
             );
         }

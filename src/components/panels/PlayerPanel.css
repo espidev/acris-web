@@ -16,6 +16,7 @@
 
 .left-component {
     float: left;
+    min-width: 16em;
 }
 
 .right-component {
@@ -49,18 +50,103 @@
     justify-content: center;
 
     float: left;
-    margin: 0 24px 0 24px;
-    width: 40px;
-    height: 40px;
+    margin: 0 1em 0 1em;
+    width: 2em;
+    height: 2em;
     border-radius: 50%;
     background-color: transparent;
     transition: background-color 0.5s;
     text-align: center;
-    font-size: 18px;
-    color: #06c
+    font-size: 1.125em;
+    color: #06c;
+    user-select: none;
 }
 
 .media-clickable:hover {
     background-color: #bee1f4;
     cursor: pointer;
+}
+
+/* Slider */
+
+.duration-text {
+    margin: 0 1em 0 1em;
+    font-size: 16px;
+}
+
+.duration-slider {
+    /*width: 20%;*/
+    flex: 1;
+    margin: 0 1em 0 1em;
+    appearance: none;
+    background: transparent;
+}
+
+.duration-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+.duration-slider:focus {
+    outline: none;
+}
+
+.duration-slider::-ms-track {
+    width: 100%;
+    cursor: pointer;
+
+    /* Hides the slider so custom styles can be added */
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+/* Slider styling */
+
+.duration-slider::-moz-range-thumb {
+    height: 1em;
+    width: 1em;
+    border-radius: 1em;
+    border: 1px solid #0277bd;
+    cursor: pointer;
+    background: #ffffff;
+    box-shadow: 0 1px 1px 1px #b8bbbe;
+}
+
+.duration-slider::-moz-range-track {
+    width: 100%;
+    height: 1px;
+    cursor: pointer;
+    background: #0277bd;
+}
+
+.duration-slider::-webkit-slider-thumb {
+    height: 1em;
+    width: 1em;
+    border-radius: 1em;
+    border: 1px solid #0277bd;
+    cursor: pointer;
+    background: #ffffff;
+}
+
+.duration-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #0277bd;
+}
+
+.duration-slider::-ms-thumb {
+    height: 1em;
+    width: 1em;
+    border-radius: 1em;
+    border: 2px solid #0277bd;
+    cursor: pointer;
+    background: #ffffff;
+}
+
+.duration-slider::-ms-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #0277bd;
 }

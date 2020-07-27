@@ -123,7 +123,7 @@ class UploadComponent extends React.Component {
                     </TextContent>
                 </PageSection>
                 <PageSection style={{textAlign: "center"}}>
-                    <form onSubmit={this.handleSubmit} ref="form">
+                    <Form onSubmit={this.handleSubmit} id="form" ref="form">
                         <UploadBox/>
                         <input className="submitButton" type="submit" value="Submit"/>
 
@@ -134,7 +134,7 @@ class UploadComponent extends React.Component {
                                 </li>
                             ))}
                         </ul>
-                    </form>
+                    </Form>
                 </PageSection>
             </React.Fragment>
         );
