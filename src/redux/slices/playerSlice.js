@@ -32,7 +32,7 @@ export const playerSlice = createSlice({
             state.isShuffled = false;
         },
         shuffleQueue: state => {
-            state.isShuffling = true;
+            state.isShuffled = true;
             let curIndex = state.trackQueue.length - state.queueIndex, temp, randomIndex;
 
             while (0 !== curIndex) {
@@ -45,7 +45,7 @@ export const playerSlice = createSlice({
             }
         },
         unshuffleQueue: state => {
-            state.isShuffling = false;
+            state.isShuffled = false;
             state.queue = state.originalTrackQueue;
         },
         play: state => {

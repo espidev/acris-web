@@ -21,6 +21,10 @@ export async function getTracks(collectionId) {
     return await axiosAPI.get('collection/' + collectionId + '/tracks/');
 }
 
+export function deleteTrack(trackId) {
+    return axiosAPI.delete('track/' + trackId + '/');
+}
+
 export function uploadToCollection(collectionId, formData, fileName) {
     return axiosAPI.put(baseURL + 'collection/' + collectionId + '/upload/', formData, {headers: {
         'Content-Type': 'multipart/form-data',

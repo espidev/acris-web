@@ -123,7 +123,7 @@ class UploadComponent extends React.Component {
                     </TextContent>
                 </PageSection>
                 <PageSection style={{textAlign: "center"}}>
-                    <Form onSubmit={this.handleSubmit} id="form" ref="form">
+                    <Form onSubmit={this.handleSubmit} id="form">
                         <UploadBox/>
                         <input className="submitButton" type="submit" value="Submit"/>
 

@@ -20,10 +20,11 @@ class TrackList extends React.Component {
             tracks: [],
             alerts: [],
         }
+
+        this.fetchTracks = this.fetchTracks.bind(this);
     }
 
-    componentDidMount() {
-        this.componentMounted = true;
+    fetchTracks() {
         getTracks(this.props.collection.id)
             .then(response => {
                 if (this.componentMounted) {
@@ -41,6 +42,11 @@ class TrackList extends React.Component {
                     this.setState({alerts: addAlert(this.state.alerts, 'Error fetching tracks.', 'danger', getUniqueId())})
                 }
             });
+    }
+
+    componentDidMount() {
+        this.componentMounted = true;
+        this.fetchTracks()
     }
 
     componentWillUnmount() {
@@ -82,7 +88,7 @@ class TrackList extends React.Component {
                         </TextContent>
                     </PageSection>
                     <PageSection>
-                        <TrackTableComponent tracks={this.state.tracks}/>
+                        <TrackTableComponent onTracksChanged={this.fetchTracks} tracks={this.state.tracks}/>
                     </PageSection>
                     <div style={{height: "50px"}}/>
             </React.Fragment>

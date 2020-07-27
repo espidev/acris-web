@@ -116,7 +116,7 @@
     outline: none;
 }
 
-.rhap_progress-container:focus, .rhap_progress-section:focus, .rhap_controls-section:focus, .rhap_main:focus {
+.rhap_progress-container:focus, .rhap_progress-section:focus, .rhap_controls-section:focus, .rhap_main:focus, *:focus {
     outline: none;
 }
 
