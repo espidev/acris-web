@@ -24,11 +24,11 @@ export const playerSlice = createSlice({
             state.isShuffled = false;
         },
         changeTrack: (state, action) => {
-            state.queueIndex = 0;
+            state.queueIndex = action.payload.queueIndex;
             state.trackQueue = action.payload.trackQueue;
             state.originalTrackQueue = action.payload.trackQueue;
             state.track = action.payload.track;
-            state.playing = false;
+            state.playing = true;
             state.isShuffled = false;
         },
         shuffleQueue: state => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {store} from "../redux/store";
-import {logoutUser} from"../redux/slices/authSlice";
+import {logoutUser} from "../redux/slices/authSlice";
 
 // TODO
 export const baseURL = 'http://localhost:8000/api/';

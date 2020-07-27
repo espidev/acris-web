@@ -28,6 +28,7 @@ class TrackTableComponent extends React.Component {
                 store.dispatch(changeTrack({
                     track: this.state.tracks[trackIndex],
                     trackQueue: this.state.tracks,
+                    queueIndex: trackIndex,
                 }));
             }
         };
