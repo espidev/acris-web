@@ -8,7 +8,8 @@ import {store} from "../../redux/store";
 import {play, pause, nextTrack, prevTrack, unshuffleQueue, shuffleQueue} from "../../redux/slices/playerSlice"
 
 import {baseURL} from "../../api/axiosApi";
-import {Text} from "@patternfly/react-core";
+
+import AudioPlayer from 'react-h5-audio-player';
 
 const mapStateToProps = (state, ownProps) => {
     let newState = {
@@ -25,44 +26,46 @@ class PlayerPanel extends React.Component {
     constructor(props) {
         // props: audioPlayer (audio ref)
         super(props);
-        this.state = {
-            currentElapsed: 0,
-            trackLength: 0,
-        }
 
         this.audioPlayer = React.createRef();
-        this.handleSliderChange = event => {
-            this.audioPlayer.currentTime = event.target.value;
-        };
-    }
-
-    componentDidMount() {
-        // update slider bar
-        setInterval(() => {
-            if (this.audioPlayer !== null)
-                this.setState({
-                    currentElapsed: this.audioPlayer.currentTime,
-                    trackLength: this.audioPlayer.duration,
-                });
-        }, 500);
     }
 
     componentDidUpdate() {
         if (this.props.changePlayingState) {
             if (this.props.playing) {
-                this.audioPlayer.play();
+                this.audioPlayer.current.audio.current.play();
             } else {
-                this.audioPlayer.pause();
+                this.audioPlayer.current.audio.current.pause();
             }
         }
     }
 
     render() {
 
-        const formatTime = (secs) => {
-            if (isNaN(secs)) return '0:00';
-            return (secs / 60) + ':' + (secs - Math.floor(secs / 60) * 60);
-        }
+        const PreviousButton = (
+            <li className="media-clickable" onClick={() => store.dispatch(prevTrack())}><Icon iconName="Previous"/></li>
+        );
+
+        const PlayPauseButton = (
+            <li className="media-clickable" onClick={() => this.props.playing ? store.dispatch(pause()) : store.dispatch(play())}>
+                {this.props.playing ? <Icon iconName="Pause"/> : <Icon iconName="Play"/>}
+            </li>
+        );
+
+        const NextButton = (
+            <li className="media-clickable" onClick={() => store.dispatch(nextTrack())}><Icon iconName="Next"/></li>
+        );
+        const VolumeButton = (
+            <li className="media-clickable"><Icon iconName="Volume2"/></li>
+        );
+        const RepeatButton = (
+            <li className="media-clickable"><Icon iconName="RepeatAll"/></li>
+        );
+        const ShuffleButton = (
+            <li className="media-clickable" onClick={() => this.props.isShuffled ? store.dispatch(unshuffleQueue()) : store.dispatch(shuffleQueue())}>
+                {this.props.isShuffled ? <Icon iconName="ScatterChart"/> : <Icon iconName="Switch"/>}
+            </li>
+        );
 
         return (
             <nav className="audio-player-panel">
@@ -75,25 +78,15 @@ class PlayerPanel extends React.Component {
                     </ul>
                 </div>
 
-                <audio src={this.props.track == null ? "" : baseURL + "track/" + this.props.track.id + "/stream"}
-                    ref={(element) => {this.audioPlayer = element}}/>
-
-                <span className="duration-text">{formatTime(this.props.currentElapsed)}</span>
-                <input type="range" min="0" max={this.state.trackLength} value={this.state.currentElapsed} className="duration-slider" onChange={this.handleSliderChange}/>
-                <span className="duration-text">{formatTime(this.props.trackLength)}</span>
-
-                <ul className="right-component">
-                    <li className="media-clickable" onClick={() => store.dispatch(prevTrack())}><Icon iconName="Previous"/></li>
-                    <li className="media-clickable" onClick={() => this.props.playing ? store.dispatch(pause()) : store.dispatch(play())}>
-                        {this.props.playing ? <Icon iconName="Pause"/> : <Icon iconName="Play"/>}
-                    </li>
-                    <li className="media-clickable" onClick={() => store.dispatch(nextTrack())}><Icon iconName="Next"/></li>
-                    <li className="media-clickable"><Icon iconName="Volume2"/></li>
-                    <li className="media-clickable"><Icon iconName="RepeatAll"/></li>
-                    <li className="media-clickable" onClick={() => this.props.isShuffled ? store.dispatch(unshuffleQueue()) : store.dispatch(shuffleQueue())}>
-                        {this.props.isShuffled ? <Icon iconName="ScatterChart"/> : <Icon iconName="Switch"/>}
-                    </li>
-                </ul>
+                {/* Heavily customized and stylized - did not import original css */}
+                <AudioPlayer
+                    src={this.props.track == null ? "" : baseURL + "track/" + this.props.track.id + "/stream"}
+                    ref={this.audioPlayer}
+                    layout="horizontal"
+                    onPlay={() => store.dispatch(play())}
+                    onPause={() => store.dispatch(pause())}
+                    customControlsSection={[PreviousButton, PlayPauseButton, NextButton, VolumeButton, RepeatButton, ShuffleButton]}
+                />
             </nav>
         );
     }
