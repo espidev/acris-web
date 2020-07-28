@@ -17,7 +17,7 @@ import {changeTrack} from "../../redux/slices/playerSlice";
 import AlertComponent from "./AlertComponent";
 import {addAlert} from "./AlertComponent";
 import {deleteTrack} from "../../api/collection";
-import parseTrack from "./TrackParser";
+import parseTrack from "../../api/trackParser";
 
 const mapStateToProps = state => ({
     currentTrack: state.player.track,

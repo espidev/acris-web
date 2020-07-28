@@ -2,8 +2,6 @@ import React from "react";
 import {Breadcrumb, BreadcrumbItem} from "@patternfly/react-core";
 import {withRouter} from "react-router-dom";
 import './BreadcrumbComponent.css'
-import {store} from "../../redux/store";
-import {switchCollection} from "../../redux/slices/playerSlice";
 
 // Quick utility to render breadcrumbs
 // Input: Array of elements (as prop element)

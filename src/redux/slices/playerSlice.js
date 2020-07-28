@@ -16,12 +16,12 @@ export const playerSlice = createSlice({
         switchCollection: (state , action) => {
             state.collection = action.payload;
 
-            state.queueIndex = 0;
-            state.trackQueue = [];
-            state.originalTrackQueue = [];
-            state.playing = false;
-            state.track = null;
-            state.isShuffled = false;
+            // state.queueIndex = 0;
+            // state.trackQueue = [];
+            // state.originalTrackQueue = [];
+            // state.playing = false;
+            // state.track = null;
+            // state.isShuffled = false;
         },
         changeTrack: (state, action) => {
             state.queueIndex = action.payload.queueIndex;

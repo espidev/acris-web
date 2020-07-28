@@ -13,7 +13,7 @@ import {
     EmptyState,
     Title,
     EmptyStateBody,
-    Button
+    Button, getUniqueId
 } from '@patternfly/react-core';
 import {Icon} from '@fluentui/react/lib/Icon';
 import LoadingComponent from "../util/LoadingComponent";
@@ -22,6 +22,7 @@ import CardComponent from "../util/CardComponent";
 import CardLayout from "../util/CardLayout";
 import {store} from "../../redux/store";
 import {switchCollection} from "../../redux/slices/playerSlice";
+import AlertComponent, {addAlert} from "../util/AlertComponent";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -34,6 +35,7 @@ class CollectionSelect extends React.Component {
         this.state = {
             collections: [],
             loading: true,
+            alerts: [],
         }
     }
 
@@ -50,6 +52,9 @@ class CollectionSelect extends React.Component {
                     loading: false,
                 });
             }
+        }).catch(err => {
+            this.setState({alerts: addAlert(this.state.alerts, 'Issue getting collections list.', 'danger', getUniqueId())});
+            console.log('Error get collections list: ' + err);
         });
     }
 
@@ -65,6 +70,7 @@ class CollectionSelect extends React.Component {
             // no collection
             return (
                 <EmptyState>
+                    <AlertComponent obj={this}/>
                     <EmptyStateIcon icon={() => <Icon style={{fontSize: "4em"}} iconName="MusicInCollection"/>}/>
                     <Title headingLevel="h4" size="lg">No Music Collections</Title>
                     <EmptyStateBody>
@@ -77,6 +83,7 @@ class CollectionSelect extends React.Component {
             // collections
             return (
                 <React.Fragment>
+                    <AlertComponent obj={this}/>
                     <PageSection>
                         <TextContent>
                             <Text component={TextVariants.h1}>Music collections</Text>
@@ -89,9 +96,9 @@ class CollectionSelect extends React.Component {
                                 <CardComponent width="15em" url={'/collection/' + col.id} key={key}>
                                     <CardTitle>{col.name}</CardTitle>
                                     <CardBody>
-                                        Owners: {JSON.stringify(col.owners)}
+                                        Owners: {col.owners.map(user => user.username)}
                                         <br/>
-                                        Viewers: {JSON.stringify(col.viewers)}
+                                        Viewers: {col.viewers.map(user => user.username)}
                                     </CardBody>
                                 </CardComponent>
                             ))}

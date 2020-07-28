@@ -10,7 +10,7 @@ import {play, pause, nextTrack, prevTrack, unshuffleQueue, shuffleQueue} from ".
 import {baseURL} from "../../api/axiosApi";
 
 import AudioPlayer from 'react-h5-audio-player';
-import parseTrack from "../util/TrackParser";
+import parseTrack from "../../api/trackParser";
 
 const mapStateToProps = (state, ownProps) => {
     let newState = {

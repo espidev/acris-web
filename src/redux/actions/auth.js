@@ -21,4 +21,5 @@ export async function logoutUser() {
     await logout();
     store.dispatch(authSlice.actions.logoutUser());
     store.dispatch(playerSlice.actions.switchCollection(null));
+    store.dispatch(playerSlice.actions.stop());
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import {baseURL} from "../../api/axiosApi";
+import {baseURL} from "./axiosApi";
 
 export default function parseTrack(track, thumbnailClass) {
     if (track === null) {

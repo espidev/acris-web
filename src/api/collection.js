@@ -21,6 +21,10 @@ export async function getTracks(collectionId) {
     return await axiosAPI.get('collection/' + collectionId + '/tracks/');
 }
 
+export function getArtists(collectionId) {
+    return axiosAPI.get('collection/' + collectionId + '/artists/');
+}
+
 export function deleteTrack(trackId) {
     return axiosAPI.delete('track/' + trackId + '/');
 }

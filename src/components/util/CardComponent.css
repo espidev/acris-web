@@ -3,6 +3,7 @@
     text-decoration: none;
     color: rgb(21, 21, 21);
     margin-right: 2em;
+    margin-bottom: 2em;
     display: flex;
 }
 .collectionActionCard:hover {
