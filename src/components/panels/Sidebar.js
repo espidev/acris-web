@@ -37,9 +37,11 @@ class Sidebar extends React.Component {
 
     render() {
         const CustomNavItem = (props) => (
-            <NavItem className="navItem" preventDefault onClick={this.navClick(props.link)}>
-                <span style={this.disabledStyle()}><Icon iconName={props.icon} style={{marginRight: "1em"}}/> {props.text}</span>
-            </NavItem>
+            <a href={this.props.collection === null ? '#' : '/collection/' + this.props.collection.id + '/' + props.link} style={{textDecoration: 'none'}}>
+                <NavItem className="navItem" preventDefault onClick={this.navClick(props.link)}>
+                    <span style={this.disabledStyle()}><Icon iconName={props.icon} style={{marginRight: "1em"}}/> {props.text}</span>
+                </NavItem>
+            </a>
         );
 
         const PageNav = (

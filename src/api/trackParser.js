@@ -13,11 +13,24 @@ export default function parseTrack(track, thumbnailClass) {
         }
     }
 
-    let thumbnail = track.thumbnail_src === null ?
-                <img className={thumbnailClass} alt="Track Image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9e4066b1-0e52-42c5-8b03-c80b53dc64c8/de1tjzh-713cea00-f11f-400c-92cc-c3f4ea8527b9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvOWU0MDY2YjEtMGU1Mi00MmM1LThiMDMtYzgwYjUzZGM2NGM4XC9kZTF0anpoLTcxM2NlYTAwLWYxMWYtNDAwYy05MmNjLWMzZjRlYTg1MjdiOS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.vk2UoBUZZbyZ2aTSlwsvAMVemoWWgfMmiNvDJcQyqJo"/>
-        : <img className={thumbnailClass} alt="Track Image" src={baseURL.substring(0, baseURL.length-5) + track.thumbnail_src}/>,
-        name = track.name === '' ? decodeURIComponent(track.file_name) : decodeURIComponent(track.name),
-        artist = '',
+    let thumbnail = <img className={thumbnailClass} alt="Track Image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9e4066b1-0e52-42c5-8b03-c80b53dc64c8/de1tjzh-713cea00-f11f-400c-92cc-c3f4ea8527b9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvOWU0MDY2YjEtMGU1Mi00MmM1LThiMDMtYzgwYjUzZGM2NGM4XC9kZTF0anpoLTcxM2NlYTAwLWYxMWYtNDAwYy05MmNjLWMzZjRlYTg1MjdiOS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.vk2UoBUZZbyZ2aTSlwsvAMVemoWWgfMmiNvDJcQyqJo"/>;
+    try {
+        if (track.thumbnail_src !== null) {
+            thumbnail = <img className={thumbnailClass} alt="Track Image"
+                             src={baseURL.substring(0, baseURL.length - 5) + track.thumbnail_src}/>;
+        }
+    } catch (e) {
+        console.log(e);
+    }
+
+    let name = '';
+    try {
+        name = track.name === '' ? decodeURIComponent(track.file_name) : decodeURIComponent(track.name);
+    } catch (e) {
+        console.log(e);
+    }
+
+    let artist = '',
         album = track.album == null ? '' : track.album.name,
         year = track.year == null ? '' : track.year,
         genre = '',

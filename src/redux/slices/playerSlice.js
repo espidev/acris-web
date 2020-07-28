@@ -15,13 +15,6 @@ export const playerSlice = createSlice({
     reducers: { // immer copies the state beforehand
         switchCollection: (state , action) => {
             state.collection = action.payload;
-
-            // state.queueIndex = 0;
-            // state.trackQueue = [];
-            // state.originalTrackQueue = [];
-            // state.playing = false;
-            // state.track = null;
-            // state.isShuffled = false;
         },
         changeTrack: (state, action) => {
             state.queueIndex = action.payload.queueIndex;
@@ -62,7 +55,7 @@ export const playerSlice = createSlice({
                 state.track = state.trackQueue[state.queueIndex];
             }
         },
-        nextTrack: state => {
+        nextTrack: (state, action) => {
             if (state.queueIndex < state.trackQueue.length-1) {
                 state.queueIndex++;
                 state.track = state.trackQueue[state.queueIndex];

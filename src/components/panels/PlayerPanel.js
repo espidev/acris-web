@@ -11,13 +11,15 @@ import {baseURL} from "../../api/axiosApi";
 
 import AudioPlayer from 'react-h5-audio-player';
 import parseTrack from "../../api/trackParser";
+import AlertComponent, {addAlert} from "../util/AlertComponent";
+import {getUniqueId} from "@patternfly/react-core";
 
 const mapStateToProps = (state, ownProps) => {
     let newState = {
         playing: state.player.playing,
         isShuffled: state.player.isShuffled,
         track: state.player.track,
-        parsedTrack: parseTrack(state.player.track, 'track-image')
+        parsedTrack: parseTrack(state.player.track, 'track-image'),
     };
     newState.changePlayingState = ownProps.playing !== state.player.playing || ownProps.parsedTrack.name !== newState.parsedTrack.name;
     return (newState);
@@ -27,14 +29,22 @@ class PlayerPanel extends React.Component {
     constructor(props) {
         // props: audioPlayer (audio ref)
         super(props);
+        this.state = {
+            alerts: [],
+        }
 
         this.audioPlayer = React.createRef();
     }
 
     componentDidUpdate() {
-        if (this.props.changePlayingState) {
+        if (this.props.changePlayingState || this.props.playing !== !this.audioPlayer.current.audio.current.paused) {
             if (this.props.playing) {
-                this.audioPlayer.current.audio.current.play();
+                this.audioPlayer.current.audio.current.play()
+                    .catch(e => {
+                        console.log(e);
+                        store.dispatch(pause());
+                        this.setState({alerts: addAlert(this.state.alerts, 'Unable to play track.', 'warning', getUniqueId())})
+                    });
             } else {
                 this.audioPlayer.current.audio.current.pause();
             }
@@ -70,7 +80,7 @@ class PlayerPanel extends React.Component {
 
         return (
             <nav className="audio-player-panel">
-
+                <AlertComponent obj={this}/>
                 <div className="left-component">
                     {this.props.parsedTrack.thumbnail}
                     <ul className="track-info">
@@ -86,6 +96,7 @@ class PlayerPanel extends React.Component {
                     layout="horizontal"
                     onPlay={() => store.dispatch(play())}
                     onPause={() => store.dispatch(pause())}
+                    onEnded={() => store.dispatch(nextTrack({playing: true}))}
                     customControlsSection={[PreviousButton, PlayPauseButton, NextButton, VolumeButton, RepeatButton, ShuffleButton]}
                 />
             </nav>
