@@ -25,6 +25,50 @@ export function getArtists(collectionId) {
     return axiosAPI.get('collection/' + collectionId + '/artists/');
 }
 
+export function getArtist(artistId) {
+    return axiosAPI.get('artist/' + artistId + '/');
+}
+
+export function getArtistTracks(artistId) {
+    return axiosAPI.get('artist/' + artistId + '/tracks/');
+}
+
+export function getAlbums(collectionId) {
+    return axiosAPI.get('collection/' + collectionId + '/albums/');
+}
+
+export function getAlbum(albumId) {
+    return axiosAPI.get('album/' + albumId + '/');
+}
+
+export function getAlbumTracks(albumId) {
+    return axiosAPI.get('album/' + albumId + '/tracks/');
+}
+
+export function getGenres(collectionId) {
+    return axiosAPI.get('collection/' + collectionId + '/genres/');
+}
+
+export function getGenre(genreId) {
+    return axiosAPI.get('genre/' + genreId + '/');
+}
+
+export function getGenreTracks(genreId) {
+    return axiosAPI.get('genre/' + genreId + '/tracks/');
+}
+
+export function getPlaylists(collectionId) {
+    return axiosAPI.get('collection/' + collectionId + '/playlists/');
+}
+
+export function getPlaylist(playlistId) {
+    return axiosAPI.get('playlist/' + playlistId + '/');
+}
+
+export function getPlaylistTracks(playlistId) {
+    return axiosAPI.get('playlist/' + playlistId + '/tracks/');
+}
+
 export function deleteTrack(trackId) {
     return axiosAPI.delete('track/' + trackId + '/');
 }

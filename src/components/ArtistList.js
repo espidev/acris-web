@@ -20,11 +20,7 @@ import CardLayout from "./util/CardLayout";
 import CardComponent from "./util/CardComponent";
 import {Icon} from "@fluentui/react";
 
-const mapStateToProps = state => (
-    {
-        collection: state.player.collection,
-    }
-);
+const mapStateToProps = state => ({collection: state.player.collection});
 
 class ArtistList extends React.Component {
 
@@ -39,20 +35,29 @@ class ArtistList extends React.Component {
     }
 
     componentDidMount() {
+        this.componentMounted = true;
         getArtists(this.props.collection.id)
             .then(res => {
-                this.setState({
-                    loading: false,
-                    artists: res.data,
-                });
+                if (this.componentMounted) {
+                    this.setState({
+                        loading: false,
+                        artists: res.data,
+                    });
+                }
             })
             .catch(err => {
-                this.setState({
-                    loading: false,
-                    alerts: addAlert(this.state.alerts, 'Issue fetching artist list.', 'danger', getUniqueId()),
-                });
-                console.log("Issue fetching artist list: " + err);
+                if (this.componentMounted) {
+                    this.setState({
+                        loading: false,
+                        alerts: addAlert(this.state.alerts, 'Issue fetching artist list.', 'danger', getUniqueId()),
+                    });
+                    console.log("Issue fetching artist list: " + err);
+                }
             });
+    }
+
+    componentWillUnmount() {
+        this.componentMounted = false;
     }
 
     render() {
@@ -125,6 +130,7 @@ class ArtistList extends React.Component {
                             })}
                         </CardLayout>
                     </PageSection>
+                    <div style={{height: "50px"}}/>
                 </React.Fragment>
             )
         }

@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {getUniqueId, PageSection, Text, TextContent, TextVariants} from "@patternfly/react-core";
 import LoadingComponent from "./util/LoadingComponent";
-import {getTracks} from "../api/collection";
+import {getAlbum, getAlbumTracks} from "../api/collection";
 import BreadcrumbComponent, {collectionBreadcrumb} from "./util/BreadcrumbComponent";
 import AlertComponent, {addAlert} from "./util/AlertComponent";
 import TrackTableComponent from "./util/TrackTableComponent";
@@ -12,28 +12,26 @@ const mapStateToProps = state => ({
     collection: state.player.collection,
 });
 
-class TrackList extends React.Component {
+class AlbumTrackList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
             tracks: [],
             alerts: [],
+            album: null,
         }
 
         this.fetchTracks = this.fetchTracks.bind(this);
     }
 
     fetchTracks() {
-        getTracks(this.props.collection.id)
+        getAlbumTracks(this.state.album.id)
             .then(response => {
                 if (this.componentMounted) {
                     console.log(response.data);
                     // change track object into table row
-                    this.setState({
-                        tracks: response.data,
-                        loading: false,
-                    });
+                    this.setState({tracks: response.data, loading: false});
                 }
             })
             .catch(err => {
@@ -46,7 +44,19 @@ class TrackList extends React.Component {
 
     componentDidMount() {
         this.componentMounted = true;
-        this.fetchTracks()
+        getAlbum(this.props.match.params.albumId)
+            .then(response => {
+                if (this.componentMounted) {
+                    this.setState({album: response.data});
+                    this.fetchTracks();
+                }
+            })
+            .catch(err => {
+                if (this.componentMounted) {
+                    console.log("Fetch error: " + err);
+                    this.setState({alerts: addAlert(this.state.alerts, 'Error fetching album.', 'danger', getUniqueId())});
+                }
+            });
     }
 
     componentWillUnmount() {
@@ -62,8 +72,13 @@ class TrackList extends React.Component {
                 isActive: false,
             },
             {
+                link: '/collection/' + this.props.collection.id + '/albums',
+                display: 'Albums',
+                isActive: false,
+            },
+            {
                 link: '',
-                display: 'Tracks',
+                display: this.state.album === null ? '' : this.state.album.name,
                 isActive: true,
             }
         ];
@@ -76,7 +91,7 @@ class TrackList extends React.Component {
                 </PageSection>
                 <PageSection>
                     <TextContent>
-                        <Text component={TextVariants.h1}>Tracks</Text>
+                        <Text component={TextVariants.h1}>{this.state.album === null ? '' : this.state.album.name}</Text>
                     </TextContent>
                 </PageSection>
             </React.Fragment>
@@ -84,10 +99,7 @@ class TrackList extends React.Component {
 
         if (this.state.loading) {
             return (
-                <React.Fragment>
-                    <PageHeader/>
-                    <LoadingComponent/>
-                </React.Fragment>
+                <React.Fragment><PageHeader/><LoadingComponent/></React.Fragment>
             );
         } else {
             return (
@@ -97,10 +109,10 @@ class TrackList extends React.Component {
                         <TrackTableComponent onTracksChanged={this.fetchTracks} tracks={this.state.tracks}/>
                     </PageSection>
                     <div style={{height: "50px"}}/>
-            </React.Fragment>
+                </React.Fragment>
             );
         }
     }
 }
 
-export default withRouter(connect(mapStateToProps)(TrackList))
+export default withRouter(connect(mapStateToProps)(AlbumTrackList))

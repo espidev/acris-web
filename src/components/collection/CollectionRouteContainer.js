@@ -14,6 +14,9 @@ import TrackList from "../TrackList";
 import AlertComponent, {addAlert} from "../util/AlertComponent";
 import {getUniqueId} from "@patternfly/react-core";
 import ArtistList from "../ArtistList";
+import ArtistTrackList from "../ArtistTrackList";
+import AlbumList from "../AlbumList";
+import AlbumTrackList from "../AlbumTrackList";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -74,8 +77,10 @@ class CollectionRouteContainer extends React.Component {
                 <Switch>
                     <Route exact path="/collection/:collectionId" component={RouteTransition(CollectionLanding)}/>
                     <Route exact path="/collection/:collectionId/tracks" component={RouteTransition(TrackList)}/>
-                    <Route exact path="/collection/:collectionId/albums"/>
+                    <Route exact path="/collection/:collectionId/albums" component={RouteTransition(AlbumList)}/>
+                    <Route exact path="/collection/:collectionId/album/:albumId" component={RouteTransition(AlbumTrackList)}/>
                     <Route exact path="/collection/:collectionId/artists" component={RouteTransition(ArtistList)}/>
+                    <Route exact path="/collection/:collectionId/artist/:artistId" component={RouteTransition(ArtistTrackList)}/>
                     <Route exact path="/collection/:collectionId/genres"/>
                     <Route exact path="/collection/:collectionId/playlists"/>
                     <Route exact path="/collection/:collectionId/upload" component={RouteTransition(UploadComponent)}/>

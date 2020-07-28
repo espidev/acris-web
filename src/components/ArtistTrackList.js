@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {getUniqueId, PageSection, Text, TextContent, TextVariants} from "@patternfly/react-core";
 import LoadingComponent from "./util/LoadingComponent";
-import {getTracks} from "../api/collection";
+import {getArtist, getArtistTracks} from "../api/collection";
 import BreadcrumbComponent, {collectionBreadcrumb} from "./util/BreadcrumbComponent";
 import AlertComponent, {addAlert} from "./util/AlertComponent";
 import TrackTableComponent from "./util/TrackTableComponent";
@@ -12,20 +12,21 @@ const mapStateToProps = state => ({
     collection: state.player.collection,
 });
 
-class TrackList extends React.Component {
+class ArtistTrackList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
             tracks: [],
             alerts: [],
+            artist: null,
         }
 
         this.fetchTracks = this.fetchTracks.bind(this);
     }
 
     fetchTracks() {
-        getTracks(this.props.collection.id)
+        getArtistTracks(this.state.artist.id)
             .then(response => {
                 if (this.componentMounted) {
                     console.log(response.data);
@@ -46,7 +47,19 @@ class TrackList extends React.Component {
 
     componentDidMount() {
         this.componentMounted = true;
-        this.fetchTracks()
+        getArtist(this.props.match.params.artistId)
+            .then(response => {
+                if (this.componentMounted) {
+                    this.setState({artist: response.data});
+                    this.fetchTracks();
+                }
+            })
+            .catch(err => {
+                if (this.componentMounted) {
+                    console.log("Fetch error: " + err);
+                    this.setState({alerts: addAlert(this.state.alerts, 'Error fetching artist.', 'danger', getUniqueId())});
+                }
+            });
     }
 
     componentWillUnmount() {
@@ -62,8 +75,13 @@ class TrackList extends React.Component {
                 isActive: false,
             },
             {
+                link: '/collection/' + this.props.collection.id + '/artists',
+                display: 'Artists',
+                isActive: false,
+            },
+            {
                 link: '',
-                display: 'Tracks',
+                display: this.state.artist === null ? '' : this.state.artist.name,
                 isActive: true,
             }
         ];
@@ -76,7 +94,7 @@ class TrackList extends React.Component {
                 </PageSection>
                 <PageSection>
                     <TextContent>
-                        <Text component={TextVariants.h1}>Tracks</Text>
+                        <Text component={TextVariants.h1}>{this.state.artist === null ? '' : this.state.artist.name}</Text>
                     </TextContent>
                 </PageSection>
             </React.Fragment>
@@ -97,10 +115,10 @@ class TrackList extends React.Component {
                         <TrackTableComponent onTracksChanged={this.fetchTracks} tracks={this.state.tracks}/>
                     </PageSection>
                     <div style={{height: "50px"}}/>
-            </React.Fragment>
+                </React.Fragment>
             );
         }
     }
 }
 
-export default withRouter(connect(mapStateToProps)(TrackList))
+export default withRouter(connect(mapStateToProps)(ArtistTrackList))
