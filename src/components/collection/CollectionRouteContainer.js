@@ -19,6 +19,8 @@ import AlbumList from "../AlbumList";
 import AlbumTrackList from "../AlbumTrackList";
 import GenreTrackList from "../GenreTrackList";
 import GenreList from "../GenreList";
+import PlaylistList from "../PlaylistList";
+import PlaylistTrackList from "../PlaylistTrackList";
 
 const mapStateToProps = state => ({
     collection: state.player.collection,
@@ -85,7 +87,8 @@ class CollectionRouteContainer extends React.Component {
                     <Route exact path="/collection/:collectionId/artist/:artistId" component={RouteTransition(ArtistTrackList)}/>
                     <Route exact path="/collection/:collectionId/genres" component={RouteTransition(GenreList)}/>
                     <Route exact path="/collection/:collectionId/genre/:genreId" component={RouteTransition(GenreTrackList)}/>
-                    <Route exact path="/collection/:collectionId/playlists"/>
+                    <Route exact path="/collection/:collectionId/playlists/" component={RouteTransition(PlaylistList)}/>
+                    <Route exact path="/collection/:collectionId/playlist/:playlistId" component={RouteTransition(PlaylistTrackList)}/>
                     <Route exact path="/collection/:collectionId/upload" component={RouteTransition(UploadComponent)}/>
                 </Switch>
             )

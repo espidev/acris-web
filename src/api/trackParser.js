@@ -1,7 +1,8 @@
 import React from "react";
 import {baseURL} from "./axiosApi";
+import 'react-lazy-load-image-component/src/effects/opacity.css';
 
-export default function parseTrack(track, thumbnailClass) {
+export default function parseTrack(track) {
     if (track === null) {
         return {
             thumbnail: <React.Fragment/>,
@@ -13,11 +14,10 @@ export default function parseTrack(track, thumbnailClass) {
         }
     }
 
-    let thumbnail = <img className={thumbnailClass} alt="Track Image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9e4066b1-0e52-42c5-8b03-c80b53dc64c8/de1tjzh-713cea00-f11f-400c-92cc-c3f4ea8527b9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvOWU0MDY2YjEtMGU1Mi00MmM1LThiMDMtYzgwYjUzZGM2NGM4XC9kZTF0anpoLTcxM2NlYTAwLWYxMWYtNDAwYy05MmNjLWMzZjRlYTg1MjdiOS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.vk2UoBUZZbyZ2aTSlwsvAMVemoWWgfMmiNvDJcQyqJo"/>;
+    let thumbnail = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9e4066b1-0e52-42c5-8b03-c80b53dc64c8/de1tjzh-713cea00-f11f-400c-92cc-c3f4ea8527b9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvOWU0MDY2YjEtMGU1Mi00MmM1LThiMDMtYzgwYjUzZGM2NGM4XC9kZTF0anpoLTcxM2NlYTAwLWYxMWYtNDAwYy05MmNjLWMzZjRlYTg1MjdiOS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.vk2UoBUZZbyZ2aTSlwsvAMVemoWWgfMmiNvDJcQyqJo";
     try {
         if (track.thumbnail_src !== null) {
-            thumbnail = <img className={thumbnailClass} alt="Track Image"
-                             src={baseURL.substring(0, baseURL.length - 5) + track.thumbnail_src}/>;
+            thumbnail = baseURL.substring(0, baseURL.length - 5) + track.thumbnail_src;
         }
     } catch (e) {
         console.log(e);

@@ -18,6 +18,7 @@ import AlertComponent from "./AlertComponent";
 import {addAlert} from "./AlertComponent";
 import {deleteTrack} from "../../api/collection";
 import parseTrack from "../../api/trackParser";
+import {LazyLoadComponent, LazyLoadImage, trackWindowScroll} from "react-lazy-load-image-component";
 
 const mapStateToProps = state => ({
     currentTrack: state.player.track,
@@ -94,7 +95,7 @@ class TrackTableComponent extends React.Component {
     }
 
     mapTrackToRow(track) {
-        let parsed = parseTrack(track, 'trackImage');
+        let parsed = parseTrack(track);
         return [parsed.thumbnail, parsed.name, parsed.artist, parsed.album, parsed.year, parsed.genre, parsed.length];
     }
 
@@ -104,8 +105,44 @@ class TrackTableComponent extends React.Component {
             <DropdownItem key="delete" onClick={this.onDeleteClick}>Delete</DropdownItem>
         ]
 
-         const TrackTable = () => (
-             <table className="trackTable">
+        const TrackTableRows = ({scrollPosition}) => (
+
+            this.state.rows.map((row, index) => (
+                <tr key={index}>
+                    <td className="trackListPictureCell">
+                        <LazyLoadImage
+                            className="trackImage"
+                            scrollPosition={scrollPosition}
+                            effect="opacity"
+                            alt="Track Image"
+                            src={row[0]}/>
+                    </td>
+                    <td className="trackListNameCell">{row[1]}</td>
+                    <td>{row[2]}</td>
+                    <td>{row[3]}</td>
+                    <td>{row[4]}</td>
+                    <td>{row[5]}</td>
+                    <td>{row[6]}</td>
+                    <td>
+                        <div>
+                            <Dropdown
+                                onSelect={() => this.onDropdownSelect(index)}
+                                toggle={<KebabToggle onToggle={isOpen => this.onDropdownToggle(isOpen, index)}/>}
+                                isOpen={this.state.isDropdownOpen[index]}
+                                isPlain
+                                dropdownItems={dropdownItems}
+                            />
+                        </div>
+                    </td>
+                </tr>
+            ))
+
+        );
+
+        const WrappedTrackTableRows = trackWindowScroll(TrackTableRows);
+
+        const TrackTable = () => (
+            <table className="trackTable">
                 <thead>
                 <tr>
                     <th className="trackListPictureCell"/>
@@ -117,33 +154,11 @@ class TrackTableComponent extends React.Component {
                     <th>Length</th>
                 </tr>
                 </thead>
-                 <tbody onClick={this.handleRowClick}>
-                    {this.state.rows.map((row, index) => (
-                            <tr key={index}>
-                                <td className="trackListPictureCell">{row[0]}</td>
-                                <td className="trackListNameCell">{row[1]}</td>
-                                <td>{row[2]}</td>
-                                <td>{row[3]}</td>
-                                <td>{row[4]}</td>
-                                <td>{row[5]}</td>
-                                <td>{row[6]}</td>
-                                <td>
-                                    <div>
-                                        <Dropdown
-                                            onSelect={() => this.onDropdownSelect(index)}
-                                            toggle={<KebabToggle onToggle={isOpen => this.onDropdownToggle(isOpen, index)}/>}
-                                            isOpen={this.state.isDropdownOpen[index]}
-                                            isPlain
-                                            dropdownItems={dropdownItems}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-                        )
-                    )}
-                 </tbody>
-             </table>
-         );
+                <tbody onClick={this.handleRowClick}>
+                    <WrappedTrackTableRows/>
+                </tbody>
+            </table>
+        );
 
         if (this.props.tracks.length !== 0) {
             return (

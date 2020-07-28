@@ -1,11 +1,11 @@
 .trackImage {
-    width: 3em;
-    height: 3em;
+    width: 2.5em;
+    height: 2.5em;
 }
 
 .trackTable > tbody > tr > td.trackListPictureCell, .trackTable > thead > tr > th.trackListPictureCell {
     padding: 0.5em 0 0.5em 0.5em;
-    width: 7em;
+    width: 4em;
 }
 
 .trackTable > tbody > tr > td.trackListNameCell, .trackTable > thead > tr > th.trackListNameCell {

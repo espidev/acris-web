@@ -19,7 +19,7 @@ const mapStateToProps = (state, ownProps) => {
         playing: state.player.playing,
         isShuffled: state.player.isShuffled,
         track: state.player.track,
-        parsedTrack: parseTrack(state.player.track, 'track-image'),
+        parsedTrack: parseTrack(state.player.track),
     };
     newState.changePlayingState = ownProps.playing !== state.player.playing || ownProps.parsedTrack.name !== newState.parsedTrack.name;
     return (newState);
@@ -82,7 +82,9 @@ class PlayerPanel extends React.Component {
             <nav className="audio-player-panel">
                 <AlertComponent obj={this}/>
                 <div className="left-component">
-                    {this.props.parsedTrack.thumbnail}
+                    <span className="track-image-span">
+                        <img className='track-image' alt="Track Image" src={this.props.parsedTrack.thumbnail}/>
+                    </span>
                     <ul className="track-info">
                         <li className="track-title">{this.props.parsedTrack.name}</li>
                         <li className="track-artist">{this.props.parsedTrack.artist}</li>

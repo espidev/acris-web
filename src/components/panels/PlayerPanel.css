@@ -30,22 +30,29 @@
 
 .track-info {
     float: left;
+    vertical-align: center;
 }
 
 .track-title {
     font-size: 14px;
     font-weight: bold;
+    vertical-align: center;
 }
 
 .track-artist {
     font-size: 16px;
+    vertical-align: center;
 }
 
 .track-image {
     float: left;
-    width: 48px;
-    height: 48px;
-    margin-right: 20px;
+    width: 3em;
+    height: 3em;
+}
+.track-image-span {
+    float: left;
+    margin-right: 1em;
+    vertical-align: center;
 }
 
 .media-clickable {
