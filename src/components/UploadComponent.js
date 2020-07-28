@@ -3,7 +3,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 import {
-    Button, EmptyState, EmptyStateBody, EmptyStateIcon, EmptyStateVariant, Form, PageSection, Text,
+    EmptyState, EmptyStateBody, EmptyStateIcon, EmptyStateVariant, Form, PageSection, Text,
     TextContent,
     TextVariants, Title
 } from "@patternfly/react-core";

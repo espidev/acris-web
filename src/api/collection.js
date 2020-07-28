@@ -26,8 +26,13 @@ export function deleteTrack(trackId) {
 }
 
 export function uploadToCollection(collectionId, formData, fileName) {
-    return axiosAPI.put(baseURL + 'collection/' + collectionId + '/upload/', formData, {headers: {
-        'Content-Type': 'multipart/form-data',
-        'Content-Disposition': 'attachment; filename=' + encodeURI(fileName),
-    }});
+    return axiosAPI.request({
+        method: 'put',
+        url: baseURL + 'collection/' + collectionId + '/upload/',
+        data: formData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            // 'Content-Disposition': 'attachment; filename=' + encodeURI(fileName),
+        }
+    });
 }

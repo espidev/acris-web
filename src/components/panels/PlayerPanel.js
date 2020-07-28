@@ -10,15 +10,16 @@ import {play, pause, nextTrack, prevTrack, unshuffleQueue, shuffleQueue} from ".
 import {baseURL} from "../../api/axiosApi";
 
 import AudioPlayer from 'react-h5-audio-player';
+import parseTrack from "../util/TrackParser";
 
 const mapStateToProps = (state, ownProps) => {
     let newState = {
         playing: state.player.playing,
         isShuffled: state.player.isShuffled,
         track: state.player.track,
-        trackName: state.player.track == null ? '' : (state.player.track.name === '' ? decodeURIComponent(state.player.track.file_name) : decodeURIComponent(state.player.track.name)),
+        parsedTrack: parseTrack(state.player.track, 'track-image')
     };
-    newState.changePlayingState = ownProps.playing !== state.player.playing || ownProps.trackName !== newState.trackName;
+    newState.changePlayingState = ownProps.playing !== state.player.playing || ownProps.parsedTrack.name !== newState.parsedTrack.name;
     return (newState);
 }
 
@@ -71,10 +72,10 @@ class PlayerPanel extends React.Component {
             <nav className="audio-player-panel">
 
                 <div className="left-component">
-                    <img className="track-image" alt="Track Image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9e4066b1-0e52-42c5-8b03-c80b53dc64c8/de1tjzh-713cea00-f11f-400c-92cc-c3f4ea8527b9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvOWU0MDY2YjEtMGU1Mi00MmM1LThiMDMtYzgwYjUzZGM2NGM4XC9kZTF0anpoLTcxM2NlYTAwLWYxMWYtNDAwYy05MmNjLWMzZjRlYTg1MjdiOS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.vk2UoBUZZbyZ2aTSlwsvAMVemoWWgfMmiNvDJcQyqJo"/>
+                    {this.props.parsedTrack.thumbnail}
                     <ul className="track-info">
-                        <li className="track-title">{this.props.trackName}</li>
-                        <li className="track-artist">Kenoi</li>
+                        <li className="track-title">{this.props.parsedTrack.name}</li>
+                        <li className="track-artist">{this.props.parsedTrack.artist}</li>
                     </ul>
                 </div>
 

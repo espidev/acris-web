@@ -17,6 +17,7 @@ import {changeTrack} from "../../redux/slices/playerSlice";
 import AlertComponent from "./AlertComponent";
 import {addAlert} from "./AlertComponent";
 import {deleteTrack} from "../../api/collection";
+import parseTrack from "./TrackParser";
 
 const mapStateToProps = state => ({
     currentTrack: state.player.track,
@@ -71,7 +72,9 @@ class TrackTableComponent extends React.Component {
                 let res = await deleteTrack(this.state.tracks[this.state.selectedRow].id);
                 console.log(res);
 
-                this.state.isDropdownOpen[this.state.selectedRow] = false;
+                let newList = [...this.state.isDropdownOpen];
+                newList[this.state.selectedRow] = false;
+                this.setState({isDropdownOpen: newList});
 
                 // trigger track list update
                 this.state.onTracksChanged();
@@ -83,6 +86,7 @@ class TrackTableComponent extends React.Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
+        // update tracks if list is updated
         this.setState({
             tracks: nextProps.tracks,
             rows: nextProps.tracks.map(this.mapTrackToRow),
@@ -90,20 +94,8 @@ class TrackTableComponent extends React.Component {
     }
 
     mapTrackToRow(track) {
-        // TODO
-        let thumbnail = (
-            <React.Fragment>
-                <img className="trackImage" alt="Track Image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9e4066b1-0e52-42c5-8b03-c80b53dc64c8/de1tjzh-713cea00-f11f-400c-92cc-c3f4ea8527b9.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvOWU0MDY2YjEtMGU1Mi00MmM1LThiMDMtYzgwYjUzZGM2NGM4XC9kZTF0anpoLTcxM2NlYTAwLWYxMWYtNDAwYy05MmNjLWMzZjRlYTg1MjdiOS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.vk2UoBUZZbyZ2aTSlwsvAMVemoWWgfMmiNvDJcQyqJo"/>
-            </React.Fragment>
-            ),
-            name = track.name === '' ? decodeURIComponent(track.file_name) : decodeURIComponent(track.name),
-            artist = track.artists,
-            album = track.album,
-            year = track.year,
-            genre = track.genres,
-            length = track.length;
-
-        return [thumbnail, name, artist, album, year, genre, length];
+        let parsed = parseTrack(track, 'trackImage');
+        return [parsed.thumbnail, parsed.name, parsed.artist, parsed.album, parsed.year, parsed.genre, parsed.length];
     }
 
     render() {
@@ -138,7 +130,7 @@ class TrackTableComponent extends React.Component {
                                 <td>
                                     <div>
                                         <Dropdown
-                                            onSelect={this.onDropdownSelect}
+                                            onSelect={() => this.onDropdownSelect(index)}
                                             toggle={<KebabToggle onToggle={isOpen => this.onDropdownToggle(isOpen, index)}/>}
                                             isOpen={this.state.isDropdownOpen[index]}
                                             isPlain
@@ -153,7 +145,7 @@ class TrackTableComponent extends React.Component {
              </table>
          );
 
-        if (this.props.tracks.length !== -+-+-+-+-+-+-+0) {
+        if (this.props.tracks.length !== 0) {
             return (
                 <React.Fragment>
                     <AlertComponent obj={this}/>
